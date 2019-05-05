@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+</head>
+<body>
+  <section class="aui-content">
+      <div class="aui-card-list aui-margin-b-0">
+          <div class="aui-card-list-content aui-text-center">
+              <div style="padding-top:1rem"></div>
+              <div class="aui-font-size-20"><div id="intive_code"></div></div>
+              <div style="padding-top:0.5rem"></div>
+              <p class="aui-margin-b-12">邀请码</p>
+              <div style="padding-bottom:1rem"></div>
+          </div>
+      </div>
+  </section>
+  <div style="padding-top:0.2rem"></div>
+  <section class="aui-content">
+      <div class="aui-card-list aui-margin-b-0">
+          <div class="aui-card-list-content aui-text-center">
+              <div style="padding-top:1rem"></div>
+              <div class="aui-font-size-20">邀请地址</div>
+              <p><div id="ewmlink"></div></p>
+              <p class="aui-margin-b-12"><div id="link"></div></p>
+              <div style="padding-bottom:1rem"></div>
+          </div>
+          <div class="aui-card-list-footer aui-text-center aui-border-t">
+              <div class="aui-text-info" onclick="copylink()">复制链接</div>
+          </div>
+      </div>
+  </section>
+  <div style="padding-top:0.2rem"></div>
+  <section class="aui-content">
+      <div class="aui-card-list aui-margin-b-0">
+          <div class="aui-card-list-content aui-text-center">
+              <div style="padding-top:1rem"></div>
+              <p class="aui-margin-b-10">邀请好友，免费获取VIP时间！</p>
+              <div style="padding-bottom:1rem"><div id="date"></div></div>
+          </div>
+      </div>
+  </section>
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript">
+  var myDate = new Date();
+  var date = $api.byId('date');
+  date.innerHTML = myDate.toLocaleString( );
+  var api_url = localStorage.getItem('api_url');
+  var uid = localStorage.getItem('user_id');
+  var token = localStorage.getItem('token');
+  apiready = function(){
+    api.parseTapmode();
+    newLoingdata();
+    var ewm = $api.byId('ewmlink');
+    var sys = api.systemType;
+    if (sys == 'ios') {
+      ewm.innerHTML = '<img src="'+localStorage.getItem('ewm_link')+localStorage.getItem('ios_download_url')+'" style="margin: 20px auto;box-shadow:0px 0px  8px 0px #d0d0d0;width: 8rem;"/>';
+      }else {
+      ewm.innerHTML = '<img src="'+localStorage.getItem('ewm_link')+localStorage.getItem('android_download_url')+'" style="margin: 20px auto;box-shadow:0px 0px  8px 0px #d0d0d0;width: 8rem;"/>';
+    }
+  }
+
+  function newLoingdata(){
+    var sys = api.systemType;
+    var link = $api.byId('link');
+    api.ajax({
+        url: api_url+'/mobile/user/invite',
+        method: 'post',
+        headers: {
+            'uid':uid,
+            'token':token
+        },
+        data: {
+        }
+    },function(ret, err){
+        if (ret) {
+          if (ret.code != 0) {
+              api.hideProgress();
+              api.alert({
+                  title: '错误！',
+                  msg: ret.msg,
+              });
+              api.sendEvent({
+                name: 'newLoingdata',
+                extra: {
+                }
+              });
+              localStorage.setItem('user_id','');
+              localStorage.setItem('user_name','');
+              localStorage.setItem('end_time','');
+              localStorage.setItem('token','');
+              localStorage.setItem('nickname','');
+              localStorage.setItem('avatar','');
+              localStorage.setItem('nickname_code','');
+              api.toast({
+                  msg: '已为你退出账号请重新登录！'
+              });
+              api.closeWin({
+              });
+              return;
+          }else if (ret.code == 0) {
+              localStorage.setItem('intive_code',ret.data['intive_code']);
+              localStorage.setItem('android_download_url',ret.data['android_download_url']);
+              localStorage.setItem('ios_download_url',ret.data['ios_download_url']);
+              var intive_code = $api.byId('intive_code');
+              intive_code.innerHTML = localStorage.getItem('intive_code');
+              if (sys == 'ios') {
+                link.innerHTML = localStorage.getItem('ios_download_url');
+                }else {
+                link.innerHTML = localStorage.getItem('android_download_url');
+              }
+              api.sendEvent({
+                name: 'newLoingdata',
+                extra: {
+                }
+              });
+          }
+        } else {
+          alert('网络错误！');
+          return;
+        }
+    });
+  }
+  function openWin(name){
+        var delay = 0;
+        if(api.systemType != 'ios'){
+            delay = 300;
+        }
+        api.openWin({
+            name: ''+name+'',
+            url: ''+name+'.html',
+            bounces:false,
+            delay: delay,
+            slidBackEnabled:true,
+            vScrollBarEnabled:false
+        });
+    }
+
+    //邀请地址按钮复制参数
+    function copylink(){
+      var sys = api.systemType;
+      if (sys == 'ios') {
+        var link = localStorage.getItem('ios_download_url');
+        }else {
+        var link = localStorage.getItem('android_download_url');
+      }
+      if (localStorage.getItem('user_id')<1) {
+        api.alert({
+            title: '请先登录',
+            msg: '知道了',
+        });
+      }else {
+        var dialogBox = api.require('dialogBox');
+        dialogBox.alert({
+            texts: {
+                content: '邀请地址：'+link,
+                leftBtnTitle: '知道了',
+                rightBtnTitle: '复制'
+            },
+            styles: {
+                bg: '#fff',
+                w: 300,
+                content: {
+                    color: '#000',
+                    size: 14
+                },
+                left: {
+                    marginB: 7,
+                    marginL: 20,
+                    w: 130,
+                    h: 35,
+                    corner: 2,
+                    bg: '#ff7600',
+                    color: '#fff',
+                    size: 14
+                },
+                right: {
+                    marginB: 7,
+                    marginL: 10,
+                    w: 130,
+                    h: 35,
+                    corner: 2,
+                    bg: '#ff7600',
+                    color: '#fff',
+                    size: 14
+                }
+            }
+        }, function(ret) {
+            if (ret.eventType == 'left') {
+                var dialogBox = api.require('dialogBox');
+                dialogBox.close({
+                    dialogName: 'alert'
+                });
+            }else if (ret.eventType == 'right') {
+              var clipBoard = api.require('clipBoard');
+              clipBoard.set({
+                  value: link
+              }, function(ret, err) {
+                  if (ret) {
+                    api.toast({
+                        msg: '已复制号码到剪切板',
+                        duration: 2000
+                    });
+                    var dialogBox = api.require('dialogBox');
+                    dialogBox.close({
+                        dialogName: 'alert'
+                    });
+                  } else {
+                  }
+              });
+            }
+        });
+      }
+    }
+</script>
+</html>

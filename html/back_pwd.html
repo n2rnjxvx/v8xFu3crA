@@ -1,0 +1,235 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+        header{background: linear-gradient(to top,#df025f 0,#ff1b7c 100%);}
+        header ul li {display: none; color: #333; position: relative;font-size: 0.9rem;  }
+        header ul li.active{ display: block; }
+        .maskedtitle{
+              text-align: center;
+              background-image: -webkit-linear-gradient(left, #ffe4b1, #ffffff 25%, #ffcb67 50%, #ffffff 75%, #ffe4b1);
+              -webkit-text-fill-color: transparent;
+              -webkit-background-clip: text;
+              -webkit-background-size: 200% 100%;
+              -webkit-animation: masked-animation 4s infinite linear;
+            }
+          @-webkit-keyframes masked-animation {
+               0%{ background-position: 0 0;}
+               100% { background-position: -100% 0;}
+          }
+    </style>
+    <style type="text/css">
+        p {
+            margin-bottom: 0.5rem;
+        }
+        ::-webkit-input-placeholder { /* WebKit browsers */
+            color:    #eaeaea;
+        }
+        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color:    #eaeaea;
+        }
+        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color:    #eaeaea;
+        }
+        :-ms-input-placeholder { /* Internet Explorer 10+ */
+            color:    #eaeaea;
+        }
+    </style>
+</head>
+<body style="background-color:#df025f">
+  <header class="aui-bar aui-bar-nav" id="aui-header" style="font-size:16px">
+      <a class="aui-btn aui-pull-left"  tapmode onclick="closeWin()"style="color:#ffffff;font-size:18px">
+          <span class="aui-iconfont aui-icon-left" style="color:#ffffff;font-size:18px"> </span>返回
+      </a>
+      <div class="aui-title maskedtitle" style="color:#ffffff;font-size:18px" id="title">修改密码</div>
+  </header>
+  <div class="myui-from">
+    <ul class="myui-from-list">
+      <li class="myui-from-list-item">
+        <input type="text" minlength="11" maxlength="11" id="username" placeholder="请输入账号" class="myui-from-list-item-input" value ="">
+      </li>
+      <li class="myui-from-list-item">
+        <input id="password_old" type="text" placeholder="请输入旧密码" class="myui-from-list-item-input">
+      </li>
+      <li class="myui-from-list-item">
+        <input id="password" type="text" placeholder="请输入新密码" class="myui-from-list-item-input">
+      </li>
+      <li class="myui-from-list-item">
+        <input id="password_a" type="text" placeholder="请再次输入新密码" class="myui-from-list-item-input">
+      </li>
+      <li class="myui-from-list-item">
+        <button id="btn2" type="button" name="button" class="myui-from-list-item-button" onclick="toReg()">修改密码</button>
+      </li>
+    </ul>
+  </div>
+
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript">
+    var api_url = localStorage.getItem('api_url');
+    apiready = function () {
+      api.parseTapmode();
+      var header = $api.byId('aui-header');
+      $api.fixStatusBar(header);
+      var headerPos = $api.offset(header);
+      var body_h = $api.offset($api.dom('body')).h;
+      var username = $api.byId('username');
+      username.value = localStorage.getItem('user_name');
+    }
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+    function toReg(){
+      var username = $api.val($api.byId('username'));
+      var password = $api.val($api.byId('password'));
+      var password_a = $api.val($api.byId('password_a'));
+      var password_old = $api.val($api.byId('password_old'));
+      var uid = localStorage.getItem('user_id');
+      var token = localStorage.getItem('token');
+      if(username == ''){
+        api.alert({
+            title: '调皮~',
+            msg: '账号获取失败...',
+        });
+        return;
+      }
+      if(password_old == ''){
+        api.alert({
+            title: '调皮~',
+            msg: '请输入旧密码',
+        });
+        return;
+      }
+      if(password != password_a){
+        api.alert({
+            title: '调皮~',
+            msg: '两次密码输入不一致',
+        });
+        return;
+      }
+      if(password_a == ''){
+        api.alert({
+            title: '调皮~',
+            msg: '请输入新密码',
+        });
+        return;
+      }
+      if(password.length < 6){
+        api.alert({
+            title: '调皮~',
+            msg: '请输入6位以上密码',
+        });
+        return;
+      }
+      api.ajax({
+          url: api_url+'/mobile/user/editpwd',
+          method: 'post',
+          headers: {
+              'id':uid,
+              'token':token
+          },
+          data: {
+              values: {
+                  pwd:password_old,
+                  newpwd:password,
+                  confirmpwd:password_a,
+              }
+          }
+      },function(ret, err){
+          if (ret) {
+            if (ret.code != 0) {
+                //alert( JSON.stringify( ret ) );
+                api.hideProgress();
+                api.alert({
+                    title: '错误！',
+                    msg: ret.msg,
+                });
+                api.sendEvent({
+                  name: 'newLoingdata',
+                  extra: {
+                  }
+                });
+                localStorage.setItem('user_id','');
+                localStorage.setItem('user_name','');
+                localStorage.setItem('end_time','');
+                localStorage.setItem('token','');
+                localStorage.setItem('nickname','');
+                localStorage.setItem('avatar','');
+                localStorage.setItem('nickname_code','');
+                api.toast({
+                    msg: '已为你退出账号请重新登录！'
+                });
+                return;
+              }else if (ret.code == 0) {
+                api.hideProgress();
+                api.alert({
+                    title: '修改成功！',
+                    msg: '请重新登录！',
+                });
+                api.closeWin({
+                    name: 'back_pwd'
+                });
+                exitLogin();
+              }
+          } else {
+            api.alert({
+                title: '糟糕~',
+                msg: '网络错误！',
+            });
+          }
+      });
+    }
+
+    function exitLogin(){
+      api.sendEvent({
+        name: 'newLoingdata',
+        extra: {
+        }
+      });
+      localStorage.setItem('user_id','');
+      localStorage.setItem('user_name','');
+      localStorage.setItem('end_time','');
+      localStorage.setItem('token','');
+      localStorage.setItem('nickname','');
+      localStorage.setItem('avatar','');
+      localStorage.setItem('nickname_code','');
+      api.toast({
+          msg: '您的账号已经退出登录！'
+      });
+    }
+
+    function openLogin(name,password){
+        var delay = 0;
+        if(api.systemType != 'ios'){
+            delay = 300;
+        }
+        api.openWin({
+            name: 'login',
+            url: './login.html',
+            pageParam:{name:name,password:password},
+        });
+    }
+
+    function openWin(name){
+          var delay = 0;
+          if(api.systemType != 'ios'){
+              delay = 300;
+          }
+          api.openWin({
+              name: ''+name+'',
+              url: ''+name+'.html',
+              bounces:false,
+              delay: delay,
+              slidBackEnabled:true,
+              vScrollBarEnabled:false
+          });
+      }
+</script>
+</html>

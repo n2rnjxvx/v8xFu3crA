@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auislide.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+</head>
+<body style="background-color:#fff">
+<div id="aui-slide">
+    <div class="aui-slide-wrap" >
+      <div id="slidebox" class="aui-slide-wrap">
+      </div>
+      <div class="aui-slide-page-wrap"><!--分页容器--></div>
+    </div>
+</div>
+<div class="gonggao">
+  <div class="list-title-l">
+    <i class="iconfont icon-xitonggonggao" style="color:#ff5e3e;font-size: 1rem"></i>
+  </div>
+  <div class="gonggao-r">
+    <span id="gonggao" class="masked" style="color:#ff5e3e;font-size: 0.65rem;padding-top:0.3rem;">会员任性看</span>
+  </div>
+</div>
+
+<div class="aui-tab" id="tab1">
+  <div class="aui-tab-item aui-active">线路一</div>
+  <div class="aui-tab-item">线路二</div>
+  <div class="aui-tab-item">线路三</div>
+  <div class="aui-tab-item">线路四</div>
+  <div class="aui-tab-item"><div id="box_name">...</div></div>
+</div>
+<div id="tab1-con">
+    <div id="tab1-con1">
+      <div class="list-title">
+        <div class="list-title-l">
+          <span style="color:#585858;font-size: 0.7rem" class="aui-navBar-item masked"><i class="iconfont icon-zuirehotchunse" style="color:#ff7600;font-size: 0.8rem"></i>直播机构 持续增加</span>
+        </div>
+        <div class="list-title-r">
+          <span style="color:#585858;font-size: 0.7rem" class="aui-navBar-item masked">房间数：<i id="count">...</i>个</span>
+        </div>
+      </div>
+      <div style="padding-top:0.2rem"></div>
+      <section class="aui-grid aui-margin-b-15">
+          <div class="aui-row" id="div_list">
+            <!--加载提示-->
+            <section class="m-noRecord"><div class="c-icon-noRecord"></div> <div class="c-info">奋力加载中...</div></section>
+            <!--加载提示-->
+        </div>
+      </section>
+    </div>
+    <div id="tab1-con2" class="aui-hide">
+      <div class="list-title">
+        <div class="list-title-l">
+          <span style="color:#585858;font-size: 0.7rem" class="aui-navBar-item masked"><i class="iconfont icon-zuirehotchunse" style="color:#ff7600;font-size: 0.8rem"></i>直播机构 持续增加</span>
+        </div>
+        <div class="list-title-r">
+          <span style="color:#585858;font-size: 0.7rem" class="aui-navBar-item masked">房间数：<i id="count_1">...</i>个</span>
+        </div>
+      </div>
+      <div style="padding-top:0.2rem"></div>
+      <section class="aui-grid aui-margin-b-15">
+          <div class="aui-row" id="div_list_a">
+            <!--加载提示-->
+            <section class="m-noRecord"><div class="c-icon-noRecord"></div> <div class="c-info">奋力加载中...</div></section>
+            <!--加载提示-->
+        </div>
+      </section>
+    </div>
+    <div id="tab1-con3" class="aui-hide">
+      <div class="list-title">
+        <div class="list-title-l">
+          <span style="color:#585858;font-size: 0.7rem" class="aui-navBar-item masked"><i class="iconfont icon-zuirehotchunse" style="color:#ff7600;font-size: 0.8rem"></i>直播机构 持续增加</span>
+        </div>
+        <div class="list-title-r">
+          <span style="color:#585858;font-size: 0.7rem" class="aui-navBar-item masked">房间数：<i id="count_2">...</i>个</span>
+        </div>
+      </div>
+      <div style="padding-top:0.2rem"></div>
+      <section class="aui-grid aui-margin-b-15">
+          <div class="aui-row" id="div_list_b">
+            <!--加载提示-->
+            <section class="m-noRecord"><div class="c-icon-noRecord"></div> <div class="c-info">奋力加载中...</div></section>
+            <!--加载提示-->
+        </div>
+      </section>
+    </div>
+    <div id="tab1-con4" class="aui-hide">
+      <div class="list-title">
+        <div class="list-title-l">
+          <span style="color:#585858;font-size: 0.7rem" class="aui-navBar-item masked"><i class="iconfont icon-zuirehotchunse" style="color:#ff7600;font-size: 0.8rem"></i>直播机构 持续增加</span>
+        </div>
+        <div class="list-title-r">
+          <span style="color:#585858;font-size: 0.7rem" class="aui-navBar-item masked">房间数：<i id="count_3">...</i>个</span>
+        </div>
+      </div>
+      <div style="padding-top:0.2rem"></div>
+      <section class="aui-grid aui-margin-b-15">
+          <div class="aui-row" id="div_list_c">
+            <!--加载提示-->
+            <section class="m-noRecord"><div class="c-icon-noRecord"></div> <div class="c-info">奋力加载中...</div></section>
+            <!--加载提示-->
+        </div>
+      </section>
+    </div>
+    <div id="tab1-con5" class="aui-hide">
+      <div class="list-title">
+        <div class="list-title-l">
+          <span style="color:#585858;font-size: 0.7rem" class="aui-navBar-item masked"><i class="iconfont icon-zuirehotchunse" style="color:#ff7600;font-size: 0.8rem"></i>直播机构 持续增加</span>
+        </div>
+        <div class="list-title-r">
+          <span style="color:#585858;font-size: 0.7rem" class="aui-navBar-item masked">房间数：<i id="count_4">...</i>个</span>
+        </div>
+      </div>
+      <div style="padding-top:0.2rem"></div>
+      <section class="aui-grid aui-margin-b-15">
+          <div class="aui-row" id="div_list_d">
+            <!--加载提示-->
+            <section class="m-noRecord"><div class="c-icon-noRecord"></div> <div class="c-info">奋力加载中...</div></section>
+            <!--加载提示-->
+        </div>
+      </section>
+    </div>
+</div>
+</body>
+<!--图片轮播-->
+<script type="text/x-dot-template" id="bannertpl">
+  {{~ it.advList : value : index }}
+    <div class="aui-slide-node bg-dark" tapmode onclick="toBanner('{{= value. link }}')">
+        <img src="{{= value. image }}" />
+    </div>
+  {{~}}
+</script>
+<!--直播图标1-->
+<script type="text/x-dot-template" id="navtjtpl">
+  {{~ it.data.lists : value : index }}
+  		<div class="aui-col-xs-4 pt-list" tapmode onclick="openWin('{{= value. name }}','{{= value. img }}','{{= value. title }}','{{= value. number }}')">
+          <div class="aui-badge">{{= value. number }}</div>
+          <i class="aui-iconfont"><img src="{{= value. img }}" style="border-radius: 300px;"/></i>
+          <div class="myui-label" style="font-size: 12px;">{{= value. title }}</div>
+          <div class="myui-label-b" style="font-size: 10px;">弹幕/对话</div>
+        </div>
+  {{~}}
+</script>
+<!--直播图标2-->
+<script type="text/x-dot-template" id="livetpl_a">
+  {{~ it.data.lists : value : index }}
+  		<div class="aui-col-xs-4 pt-list" tapmode onclick="openWin1('{{= value. name }}','{{= value. img }}','{{= value. title }}','{{= value. number }}')">
+          <div class="aui-badge">{{= value. number }}</div>
+          <i class="aui-iconfont"><img src="{{= value. img }}" style="border-radius: 300px;"/></i>
+          <div class="myui-label" style="font-size: 12px;">{{= value. title }}</div>
+          <div class="myui-label-b" style="font-size: 10px;">弹幕/对话</div>
+        </div>
+  {{~}}
+</script>
+<!--直播图标3-->
+<script type="text/x-dot-template" id="livetpl_b">
+  {{~ it.data.lists : value : index }}
+  		<div class="aui-col-xs-4 pt-list" tapmode onclick="openWin2('{{= value. name }}','{{= value. img }}','{{= value. title }}','{{= value. number }}')">
+          <div class="aui-badge">{{= value. number }}</div>
+          <i class="aui-iconfont"><img src="{{= value. img }}" style="border-radius: 300px;"/></i>
+          <div class="myui-label" style="font-size: 12px;">{{= value. title }}</div>
+          <div class="myui-label-b" style="font-size: 10px;">弹幕/对话</div>
+        </div>
+  {{~}}
+</script>
+<!--直播图标4-->
+<script type="text/x-dot-template" id="livetpl_c">
+  {{~ it.data.lists : value : index }}
+  		<div class="aui-col-xs-4 pt-list" tapmode onclick="openWin3('{{= value. name }}','{{= value. img }}','{{= value. title }}','{{= value. number }}')">
+          <div class="aui-badge">{{= value. number }}</div>
+          <i class="aui-iconfont"><img src="{{= value. img }}" style="border-radius: 300px;"/></i>
+          <div class="myui-label" style="font-size: 12px;">{{= value. title }}</div>
+          <div class="myui-label-b" style="font-size: 10px;">弹幕/对话</div>
+        </div>
+  {{~}}
+</script>
+<!--直播图标5-->
+<script type="text/x-dot-template" id="livetpl_d">
+  {{~ it.data.lists : value : index }}
+  		<div class="aui-col-xs-4 pt-list" tapmode onclick="openWin4('{{= value. name }}','{{= value. img }}','{{= value. title }}','{{= value. number }}')">
+          <div class="aui-badge">{{= value. number }}</div>
+          <i class="aui-iconfont"><img src="{{= value. img }}" style="border-radius: 300px;"/></i>
+          <div class="myui-label" style="font-size: 12px;">{{= value. title }}</div>
+          <div class="myui-label-b" style="font-size: 10px;">弹幕/对话</div>
+        </div>
+  {{~}}
+</script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/doT.js"></script>
+<script type="text/javascript" src="../script/aui-tab.js"></script>
+<script type="text/javascript" src="../script/auipullrefresh.js"></script>
+<script type="text/javascript" src="../script/auislide.js"></script>
+<script type="text/javascript" src="../script/auilazyload.js" ></script>
+<script type="text/javascript">
+  var api_url = localStorage.getItem('api_url');
+  apiready = function(){
+    getBanner();
+    api.parseTapmode();
+    api.setRefreshHeaderInfo({
+        visible: true,
+        loadingImg: 'widget://image/refresh.png',
+        bgColor: '#fff',
+        textColor: '#333',
+        textDown: '下拉刷新...',
+        textUp: '松开刷新...',
+        showTime: true
+    }, function(ret, err){
+      if (err) {
+        api.toast({
+            msg: '加载数据失败',
+            duration: 2000,
+            location: 'middle'
+        });
+        api.refreshHeaderLoadDone();
+      }else {
+        getBanner();
+        getLive();
+        getLive1();
+        getLive2();
+        getLive3();
+        banNer();
+        api.toast({
+            msg: '刷新成功',
+            duration: 1000,
+            location: 'middle'
+        });
+        api.refreshHeaderLoadDone();
+      }
+    });
+  }
+
+  //分类定时执行数据加载
+  var fltimer = setInterval(function(){
+      getLive();
+  },1000)
+
+  //分类定时执行数据加载
+  var fl1timer = setInterval(function(){
+      getLive1();
+  },1200)
+
+  //分类定时执行数据加载
+  var fl2timer = setInterval(function(){
+      getLive2();
+  },1400)
+
+  //分类定时执行数据加载
+  var fl3timer = setInterval(function(){
+      getLive3();
+  },1600)
+
+  //分类定时执行数据加载
+  var fl4timer = setInterval(function(){
+      getLive4();
+  },1800)
+
+  var tab = new auiTab({
+      element:document.getElementById("tab1")
+  },function(ret){
+      if(ret){
+          //  定义获取对象的所有兄弟节点函数
+          function siblings(elm) {
+              var a = [];
+              var p = elm.parentNode.children;
+              for(var i =0,pl= p.length;i<pl;i++) {
+              if(p[i] !== elm) a.push(p[i]);
+              }
+              return a;
+          };
+          var index = ret.index;
+          var activeC = document.getElementById("tab1-con" + index);
+          activeC.className = "";
+          for(var i=0;i<siblings(activeC).length;i++){
+              siblings(activeC)[i].className = "aui-hide";
+          }
+      }
+  });
+
+  //直播获取
+  function getLive(){
+    api.showProgress({
+        title: '加载中...',
+        modal: false
+    });
+    var navid = $api.byId('div_list');
+    var navtpl = $api.byId('navtjtpl');
+    api.ajax({
+        url: api_url+'/mobile/live/index',
+        method: 'post',
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          localStorage.setItem('count',ret.data.count);
+          var count = $api.byId('count');
+          count.innerHTML = localStorage.getItem('count');
+          var pagefn = doT.template(navtpl.text);
+          navid.innerHTML = pagefn(ret);
+          api.hideProgress();
+//      alert( JSON.stringify(ret.data) );
+        } else {
+            api.toast({
+                msg: '直播线路一加载失败，建议重试',
+                duration: 2000
+            });
+            //alert( '直播线路一加载失败！' );
+            api.hideProgress();
+        }
+    });
+    clearInterval(fltimer);
+  }
+
+  //直播获取
+  function getLive1(){
+    api.showProgress({
+        title: '加载中...',
+        modal: false
+    });
+    var navid = $api.byId('div_list_a');
+    var navtpl = $api.byId('livetpl_a');
+    api.ajax({
+        url: api_url+'/mobile/live1/index',
+        method: 'post',
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          localStorage.setItem('count_1',ret.data.count);
+          var count_1 = $api.byId('count_1');
+          count_1.innerHTML = localStorage.getItem('count_1');
+          var pagefn = doT.template(navtpl.text);
+          navid.innerHTML = pagefn(ret);
+          api.hideProgress();
+      //alert( JSON.stringify(ret) );
+        } else {
+            api.toast({
+                msg: '直播线路二加载失败，建议重试',
+                duration: 2000
+            });
+            //alert( '直播线路二加载失败，建议重试' );
+            api.hideProgress();
+        }
+    });
+    clearInterval(fl1timer);
+  }
+
+  //直播获取
+  function getLive2(){
+    api.showProgress({
+        title: '加载中...',
+        modal: false
+    });
+    var navid = $api.byId('div_list_b');
+    var navtpl = $api.byId('livetpl_b');
+    api.ajax({
+        url: api_url+'/mobile/live2/index',
+        method: 'post',
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          localStorage.setItem('count_2',ret.data.count);
+          var count_2 = $api.byId('count_2');
+          count_2.innerHTML = localStorage.getItem('count_2');
+
+          var pagefn = doT.template(navtpl.text);
+          navid.innerHTML = pagefn(ret);
+          api.hideProgress();
+      //alert( JSON.stringify(ret) );
+        } else {
+            api.toast({
+                msg: '直播线路三加载失败，建议重试',
+                duration: 2000
+            });
+            //alert( '直播线路三加载失败！' );
+            api.hideProgress();
+        }
+    });
+    clearInterval(fl2timer);
+  }
+
+  //直播获取
+  function getLive3(){
+    api.showProgress({
+        title: '加载中...',
+        modal: false
+    });
+    var navid = $api.byId('div_list_c');
+    var navtpl = $api.byId('livetpl_c');
+    api.ajax({
+        url: api_url+'/mobile/live3/index',
+        method: 'post',
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          localStorage.setItem('count_3',ret.data.count);
+          var count_3 = $api.byId('count_3');
+          count_3.innerHTML = localStorage.getItem('count_3');
+
+          var pagefn = doT.template(navtpl.text);
+          navid.innerHTML = pagefn(ret);
+          api.hideProgress();
+      //alert( JSON.stringify(ret) );
+        } else {
+            api.toast({
+                msg: '直播线路四加载失败，建议重试',
+                duration: 2000
+            });
+            //alert( '直播线路四加载失败！' );
+            api.hideProgress();
+        }
+    });
+    clearInterval(fl3timer);
+  }
+
+  //直播获取
+  function getLive4(){
+    api.showProgress({
+        title: '加载中...',
+        modal: false
+    });
+    var navid = $api.byId('div_list_d');
+    var navtpl = $api.byId('livetpl_d');
+    api.ajax({
+        url: api_url+'/mobile/index/box_Live',
+        method: 'post',
+    },function(ret, err){
+        if (ret) {
+            //var fns = doT.template(wzttpl.text);
+            var box_link = ret.data[0].link;
+            var box_uid = ret.data[0].uid;
+            var box_token = ret.data[0].token;
+            var box_fn = $api.byId('box_name');
+            box_fn.innerHTML = ret.data[0].name;
+            api.ajax({
+                url: box_link+'/mobile/live/index',
+                method: 'post',
+                headers: {
+                    'id':box_uid,
+                    'token':box_token
+                }
+            },function(ret, err){
+                if (ret) {
+                    localStorage.setItem('count_4',ret.data.count);
+                    var count_4 = $api.byId('count_4');
+                    count_4.innerHTML = localStorage.getItem('count_4');
+
+                    var pagefn = doT.template(navtpl.text);
+                    navid.innerHTML = pagefn(ret);
+                    api.hideProgress();
+                    //alert( JSON.stringify( ret ) );
+                } else {
+                    api.toast({
+                        msg: '直播线路五加载失败，建议重试',
+                        duration: 2000
+                    });
+                    //alert( '直播线路四加载失败！' );
+                    api.hideProgress();
+                }
+            });
+            //alert( JSON.stringify( sss ) );
+        }
+    });
+    clearInterval(fl4timer);
+  }
+
+  //打开播放页
+  function openLive(url){
+    var time = localStorage.getItem('end_time');
+    var user_id = localStorage.getItem('user_id');
+    var username = localStorage.getItem('user_name');
+    var token = localStorage.getItem('token');
+    var is_ever = localStorage.getItem('is_ever');//是否是终身会员
+    var timestamp = Date.parse(new Date())/1000;
+    if(user_id==0){
+      api.alert({
+          title: '温馨提示',
+          msg: '请先登陆后使用',
+      });
+      api.openWin({
+          name: 'login',
+          url: './login.html',
+          delay: 300
+      });
+      return;
+    }
+    if (time>timestamp) {
+      setTimeout("playRadio();",1000);
+      var delay = 0;
+      if(api.systemType != 'ios'){
+          delay = 300;
+      }
+      api.openWin({
+          name: 'video_win',
+          url: './video_win.html',
+          delay: 800,
+          pageParam:{url:url},
+          bgColor: 'rgba(0,0,0,0)'
+      });
+    }else if (is_ever == 1) {
+      setTimeout("playRadio();",2000);
+      var delay = 0;
+      if(api.systemType != 'ios'){
+          delay = 300;
+      }
+      api.openWin({
+          name: 'video_win',
+          url: './video_win.html',
+          delay: 800,
+          pageParam:{url:url},
+          bgColor: '#000000'
+      });
+    }else if (time<timestamp){
+      var dialogBox = api.require('dialogBox');
+      dialogBox.alert({
+          texts: {
+              content: '您的VIP会员已过期，请续期！',
+              leftBtnTitle: '去续费',
+              rightBtnTitle: '关闭'
+          },
+          styles: {
+              bg: '#fff',
+              w: 300,
+              content: {
+                  color: '#000',
+                  size: 14
+              },
+              left: {
+                  marginB: 7,
+                  marginL: 20,
+                  w: 130,
+                  h: 35,
+                  corner: 2,
+                  bg: '#df025f',
+                  color: '#fff',
+                  size: 14
+              },
+              right: {
+                  marginB: 7,
+                  marginL: 10,
+                  w: 130,
+                  h: 35,
+                  corner: 2,
+                  bg: '#df025f',
+                  color: '#fff',
+                  size: 14
+              }
+          }
+      }, function(ret) {
+          if (ret.eventType == 'left') {
+            api.openWin({
+                name: 'open_vip_win',
+                url: './open_vip_win.html',
+                delay: 300
+            });
+              var dialogBox = api.require('dialogBox');
+              dialogBox.close({
+                  dialogName: 'alert'
+              });
+          }else if (ret.eventType == 'right') {
+            var dialogBox = api.require('dialogBox');
+            dialogBox.close({
+                dialogName: 'alert'
+            });
+          }
+      });
+    }
+  }
+
+  function openVipurl(url){
+    var time = localStorage.getItem('end_time');
+    var user_id = localStorage.getItem('user_id');
+    var username = localStorage.getItem('user_name');
+    var token = localStorage.getItem('token');
+    var is_ever = localStorage.getItem('is_ever');//是否是终身会员
+    var timestamp = Date.parse(new Date())/1000;
+    if(user_id!=0){
+      api.alert({
+          title: '温馨提示',
+          msg: '请先登陆后使用',
+      });
+      api.openWin({
+          name: 'login',
+          url: './login.html',
+          delay: 300
+      });
+      return;
+    }
+    if (time>timestamp) {
+
+      setTimeout("playRadio();",1000);
+      var delay = 0;
+      if(api.systemType != 'ios'){
+          delay = 300;
+      }
+      api.openWin({
+          name: 'h5',
+          url: './h5.html',
+          delay: 800,
+          pageParam:{url:url},
+          bgColor: 'rgba(0,0,0,0)'
+      });
+    }else if (is_ever == 1) {
+      setTimeout("playRadio();",2000);
+      var delay = 0;
+      if(api.systemType != 'ios'){
+          delay = 300;
+      }
+      api.openWin({
+          name: 'h5',
+          url: './h5.html',
+          delay: 800,
+          pageParam:{url:url},
+          bgColor: '#000000'
+      });
+    }else if (time<timestamp){
+      var dialogBox = api.require('dialogBox');
+      dialogBox.alert({
+          texts: {
+              content: '您的VIP会员已过期，请续期！',
+              leftBtnTitle: '去续费',
+              rightBtnTitle: '关闭'
+          },
+          styles: {
+              bg: '#fff',
+              w: 300,
+              content: {
+                  color: '#000',
+                  size: 14
+              },
+              left: {
+                  marginB: 7,
+                  marginL: 20,
+                  w: 130,
+                  h: 35,
+                  corner: 2,
+                  bg: '#ff7600',
+                  color: '#fff',
+                  size: 14
+              },
+              right: {
+                  marginB: 7,
+                  marginL: 10,
+                  w: 130,
+                  h: 35,
+                  corner: 2,
+                  bg: '#ff7600',
+                  color: '#fff',
+                  size: 14
+              }
+          }
+      }, function(ret) {
+          if (ret.eventType == 'left') {
+            api.openWin({
+                name: 'open_vip_win',
+                url: './open_vip_win.html',
+                delay: 300
+            });
+              var dialogBox = api.require('dialogBox');
+              dialogBox.close({
+                  dialogName: 'alert'
+              });
+          }else if (ret.eventType == 'right') {
+            var dialogBox = api.require('dialogBox');
+            dialogBox.close({
+                dialogName: 'alert'
+            });
+          }
+      });
+    }
+  }
+
+  //访问轮播地址
+  function toBanner(url){
+    if (url == '') {
+    }else {
+      api.openWin({
+          name: 'h5',
+          url: './h5.html',
+          pageParam: {
+              url: url
+          }
+      });
+    }
+  }
+
+  //轮播公告获取
+  function getBanner(){
+    var bannerid = $api.byId('slidebox');
+    var bannertpl = $api.byId('bannertpl');
+    api.ajax({
+        url: api_url+'/mobile/index/index',
+        method: 'get'
+    },function(ret, err){
+        if (ret) {
+          localStorage.setItem('ggtext',ret.data.notice);
+          var ggvert = $api.byId('gonggao');
+          ggvert.innerHTML = localStorage.getItem('ggtext');
+        } else {
+          api.toast({
+              msg: '公告加载失败！',
+              duration: 2000
+          });
+          //alert( '公告加载失败！' );
+          api.hideProgress();
+        }
+    });
+
+    api.ajax({
+        url: api_url+'/mobile/index/index',
+        method: 'get',
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          var pagefn = doT.template(bannertpl.text);
+          bannerid.innerHTML = pagefn(ret.data);
+//      alert( JSON.stringify( ret.data.advList ) );
+          banNer();
+        } else {
+            api.toast({
+                msg: '轮播图加载失败！',
+                duration: 2000
+            });
+            //alert( '轮播图加载失败！' );
+            api.hideProgress();
+        }
+    });
+  }
+
+  //幻灯轮播图
+  function banNer(){
+    var slide = new auiSlide({
+        container:document.getElementById("aui-slide"),
+        // "width":300,
+        "height":150,
+        "speed":400,
+        "pageShow":true,
+        "autoPlay": 5000,
+        "pageStyle":'dot',
+        "loop":true,
+        'dotPosition':'center',
+    });
+  }
+  new auiLazyload({
+      errorImage:'../image/error-img.jpg'
+  });
+
+  function openurl(url) {
+     api.openApp({
+     androidPkg : 'android.intent.action.VIEW',
+     mimeType : 'text/html',
+     uri : url,
+     }, function(ret, err) {
+      var msg = JSON.stringify(ret);
+      api.openApp({
+      iosUrl: url
+    });
+    });
+ }
+
+ function so(){
+    var wd = $api.val($api.byId('ff-wd'));
+  	api.openWin({
+    name: 'video_soplay',
+    url: './video_soplay.html',
+    pageParam: {
+    url: 'http://m.360kan.com/search/index?kw=' + wd
+        }
+    });
+}
+
+function openWin(name,img,title,number,live){
+    api.openWin({
+    name: 'bzhibo_win',
+    pageParam:{
+    name: name,
+    img:img,
+    live:live,
+    number:number,
+    title:title
+    },
+        url: 'bzhibo_win.html',
+    });
+}
+function openWin1(name,img,title,number){
+    api.openWin({
+    name: 'bzhibo1_win',
+    pageParam:{
+    name: name,
+    img:img,
+    number:number,
+    title:title
+    },
+        url: 'bzhibo1_win.html',
+    });
+}
+function openWin2(name,img,title,number){
+    api.openWin({
+    name: 'bzhibo2_win',
+    pageParam:{
+    name: name,
+    img:img,
+    number:number,
+    title:title
+    },
+        url: 'bzhibo2_win.html',
+    });
+}
+function openWin3(name,img,title,number){
+    api.openWin({
+    name: 'bzhibo3_win',
+    pageParam:{
+    name: name,
+    img:img,
+    number:number,
+    title:title
+    },
+        url: 'bzhibo3_win.html',
+    });
+}
+function openWin4(name,img,title,number){
+    api.openWin({
+    name: 'bzhibo4_win',
+    pageParam:{
+    name: name,
+    img:img,
+    number:number,
+    title:title
+    },
+        url: 'bzhibo4_win.html',
+    });
+}
+</script>
+</html>

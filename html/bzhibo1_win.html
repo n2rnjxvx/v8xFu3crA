@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+        header{background: linear-gradient(to top,#df025f 0,#ff1b7c 100%);}
+        header ul li {display: none; color: #333; position: relative;font-size: 0.9rem;  }
+        header ul li.active{ display: block; }
+        .maskedtitle{
+              text-align: center;
+              background-image: -webkit-linear-gradient(left, #ffe4b1, #ffffff 25%, #ffcb67 50%, #ffffff 75%, #ffe4b1);
+              -webkit-text-fill-color: transparent;
+              -webkit-background-clip: text;
+              -webkit-background-size: 200% 100%;
+              -webkit-animation: masked-animation 4s infinite linear;
+            }
+          @-webkit-keyframes masked-animation {
+               0%{ background-position: 0 0;}
+               100% { background-position: -100% 0;}
+          }
+    </style>
+</head>
+<body>
+  <header class="aui-bar aui-bar-nav" id="aui-header" style="font-size:16px">
+      <a class="aui-btn aui-pull-left"  tapmode onclick="closeWin() "style="color:#ffffff;font-size:18px">
+          <span class="aui-iconfont aui-icon-left" style="color:#ffffff;font-size:18px"> </span>返回
+      </a>
+
+
+      <div id="title" class="aui-title maskedtitle" style="color:#ffffff;font-size:18px">主播列表</div>
+  </header>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+  apiready = function(){
+    api.parseTapmode();
+    var title = $api.byId('title');
+    title.innerHTML = api.pageParam.title;
+    var header = $api.byId('aui-header');
+    $api.fixStatusBar(header);
+    var headerPos = $api.offset(header);
+    var body_h = $api.offset($api.dom('body')).h;
+    api.openFrame({
+        name: 'bzhibo1_frm',
+        url: 'bzhibo1_frm.html',
+        pageParam:{
+        	name: api.pageParam.name,
+          img:api.pageParam.img,
+          title:api.pageParam.title,
+          Number:api.pageParam.number
+
+        },
+        bounces: true,
+        rect: {
+            x: 0,
+            y: headerPos.h,
+            w: 'auto',
+            h: 'auto'
+          }
+
+
+    });
+
+
+  }
+
+
+
+  function closeWin(){
+      api.closeWin({
+      });
+  }
+</script>
+</html>

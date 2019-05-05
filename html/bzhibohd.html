@@ -1,0 +1,319 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="../css/live.css">
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auislide.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/aui-flex.css"/>
+    <title>title</title>
+    <style type="text/css">
+    html,body{}
+			.contentFooter{
+				position: absolute;
+				bottom: 0.6rem;
+				left:0.6rem;
+				right: 0.6rem;
+			}
+			 .jbBox,.gzmBox,.gbBox{
+				display: inline-block;
+				background: rgba(0,0,0,.5);
+				text-align: center;
+			}
+			.contentFooter  img{
+				width: 1.2rem;
+				vertical-align: middle;
+
+			}
+			.jbBox,.gbBox{
+				display: inline-block;
+				width: 1.8rem;
+				height: 1.8rem;
+				vertical-align: middle;
+			}
+			.jbBox img{
+				padding-top: 0.2rem;
+			}
+			.gbBox img{
+				padding-top: 0.25rem;
+			}
+			.gzmBox{
+				width: 3.2rem;
+				padding: 3px 0px;
+			}
+			.barrageBox{
+				position: absolute;
+				bottom: 3rem;
+				left: 0px;
+				width:80%;
+				max-height: 60%;
+				overflow-y: auto;
+				overflow-x: hidden;
+				-webkit-overflow-scrolling: touch;
+			}
+			.barrageBoxTitle{
+				color: #fd5e02;
+				width: 4.5rem;
+				padding: 0px 5px;
+			}
+			.livingMsg{
+				position: absolute;
+				top: 0.6rem;
+				left: 0.5rem;
+			}
+			.livingMsgL,.reportBox{
+				background: rgba(0,0,0,.5);
+			}
+			.livingMsgL_L img{
+				display: block;
+				width: 1.8rem;
+				height: 1.8rem;
+				margin-right: 0.2rem;
+			}
+			.livingMsgL_R{
+				padding-right: 0.6rem;
+			}
+			.reportBox{
+				padding: 1rem 1.6rem;
+				width: 70%;
+			}
+		</style>
+
+    <script type="text/javascript" src="../script/zhibo.js" ></script>
+
+</head>
+<body>
+<!--聊天窗口部分代码  开始-->
+<div id="livebt" class="live-bt" >
+</div>
+<div id="vue-content">
+    <div id="mengban" style="text-align:right;" :class="giftName">
+        <img src="../image/" alt="" style="width: 50%;margin-top: 70px;"/>
+    </div>
+    <div class="barrageBox" id="barrageBox">
+      <ul>
+          <li class="announcement" v-html="announcement"></li>
+      </ul>
+      <div id="message" style="margin:10px">
+          <ul id="inputUl">
+
+<li v-for="text in inputList" class="message-list"> <span class="metext">{{metext}} </span>: {{text}}</li>
+
+          </ul>
+      </div>
+    </div>
+
+    <div id="livebtn"   style="background-color: rgba(0, 0, 0, 1)">
+        <input id="inputV" v-model="inputValue" type="text" style="color:#fff;width:48%"/>
+        <div onclick="closeWin()" class="live-btn-l">
+            <img src="../image/gift.png">
+        </div>
+
+        <div onclick="clickCloseBarrage(this)" class="live-btn-l">
+            <img src="../image/tanmu.png">
+        </div>
+
+        <div class="live-btn-l">
+            <div class="m journal-reward"> <img src="../image/love.png" class="" /> </div>
+        </div>
+
+        <div class="live-btn-l"  @click="handelClick">
+            <img src="../image/fasong.png">
+        </div>
+
+    </div>
+</div>
+<!--聊天窗口部分代码  结束-->
+
+  <div id="livebt" class="live-bt">
+    <div id="livetop" class="live-top"  >
+
+
+  <div class="br"></div>
+  <div class="br"></div>
+    <div class="br"></div>
+
+
+<!--主播图片-->
+
+<table width="70%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="42%">
+          <div  class="zbname " >
+     <img id="pic" class="live-top-box-img" >
+      </div>
+      </td>
+    <td width="58%">
+    <div id="title" class="zbname " style="color:#fffc00" ></div>
+    </td>
+  </tr>
+</table>
+    <!--文字广告1-->
+    <div class="br"></div>
+    <div id="wzbox_top"></div>
+    <!--文字广告2-->
+    <div class="br"></div>
+    <div id="wzbox_bottom"></div>
+  </div>
+</div>
+
+</body>
+<!--文字广告1-->
+<script type="text/x-dot-template" id="wzttpl">
+<span onclick="toBanner('{{=it.link}}')" style="display:none" id="img"><img src="{{=it.image}}" class="live-top-box-ad-img"/></span>
+</script>
+
+<!--文字广告2-->
+<script type="text/x-dot-template" id="wzbtpl">
+<span onclick="toBanner('{{=it.link}}')" style="display:none" id="img2"><img src="{{=it.image}}" class="live-top-box-ad-img"/></span>
+</script>
+
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript" src="../script/doT.js"></script>
+<script src="../script/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    time=setInterval("showAdd()",3000);
+});
+function showAdd(){
+//      $("#img").show(500); //普通弹出
+    $("#img").fadeIn(500);
+    $("#img2").fadeIn(800);
+    clearInterval(time);
+    time=setInterval("hiddenAd()",3000);
+}
+function hiddenAd(){
+//  $("#img").hide(800);
+//  $("#img2").hide(800);
+    $("#img").fadeOut(800);
+    $("#img2").fadeOut(500);
+    clearInterval(time);
+    time=setInterval("showAdd()",3000);
+}
+</script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('.back').click(function () {
+    window.history.go(-1);
+  });
+  });
+  function clickReportBox () {
+    $('#reportBox').removeClass('cm-hide');
+    setTimeout(function () {
+      $('#reportBox').addClass('cm-hide');
+    },2000);
+  }
+  function clickCloseBarrage (obj) {
+    if($(obj).hasClass('on')){
+      $(obj).removeClass('on');
+      $('#barrageBox').removeClass('cm-hide');
+      $(obj).html();
+    }else{
+      $(obj).addClass('on');
+      $('#barrageBox').addClass('cm-hide');
+      $(obj).html();
+    }
+  }
+</script>
+<script type="text/javascript">
+var api_url = localStorage.getItem('api_url');
+    apiready = function(){
+      getAdv();
+      api.parseTapmode();
+      var pic = $api.byId('pic');
+      var title = $api.byId('title');
+      pic.src = api.pageParam.img;
+      title.innerHTML = api.pageParam.title;
+      api.setStatusBarStyle({
+          style: 'light',
+          color: 'rgba(0,0,0,0)'
+      });
+    api.parseTapmode();
+    }
+
+    function closeWin(){
+      api.setScreenOrientation({
+          orientation: 'portrait_up'
+      });
+        api.closeWin({
+        });
+        api.execScript({
+             winName: 'bzhibo_play',
+             script: 'destroy();'
+         });
+    }
+
+    function imgUrl(url){
+      api.openWin({
+          name: 'h5',
+          url: './h5.html',
+          pageParam: {
+              url: url
+          }
+      });
+    }
+
+    function playRadio(){
+      api.hideProgress();
+    }
+
+    //访问轮播地址
+    function toBanner(url){
+      if (url == '') {
+      }else {
+        api.openWin({
+            name: 'h5',
+            url: './h5.html',
+            pageParam: {
+                url: url
+            }
+        });
+      }
+    }
+
+    //直播广告获取
+    function getAdv(){
+      var wztid = $api.byId('wzbox_top');
+      var wzttpl = $api.byId('wzttpl');
+      var wzbid = $api.byId('wzbox_bottom');
+      var wzbtpl = $api.byId('wzbtpl');
+      api.ajax({
+          url: api_url+'/mobile/index/liveadv',
+          method: 'post',
+      },function(ret, err){
+          if (ret) {
+            //渲染模板
+            var fns = doT.template(wzttpl.text);
+            wztid.innerHTML = fns(ret.data.advList[0]);
+            var fn = doT.template(wzbtpl.text);
+            wzbid.innerHTML = fn(ret.data.advList[1]);
+          } else {
+              alert( '网络错误' );
+              api.hideProgress();
+          }
+      });
+    }
+
+    function openurl(url) {
+       api.openApp({
+       androidPkg : 'android.intent.action.VIEW',
+       mimeType : 'text/html',
+       uri : url,
+       }, function(ret, err) {
+        var msg = JSON.stringify(ret);
+        api.openApp({
+        iosUrl: url
+      });
+      });
+   }
+</script>
+<script src="http://47.104.128.121:8542/static/mobile/javascript/lt.js" type="text/javascript" charset="utf-8"></script>
+<script src="../script/xh.js" type="text/javascript" charset="utf-8"></script>
+<script src="../script/flutter-hearts-zmt.js" type="text/javascript" charset="utf-8"></script>
+</html>

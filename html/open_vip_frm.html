@@ -1,0 +1,357 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+</head>
+<body>
+  <div style="padding-top:0.2rem"></div>
+  <div class="open-vip-t">
+    <div class="br"></div>
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-form-list">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-lock"></i>
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input id="cardno" type="text" placeholder="在此处粘贴卡密">
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="aui-content-padded">
+        <p><div class="aui-btn-tuichu aui-btn-block" tapmode onclick="loginOff()">立 即 开 通</div></p>
+    </div>
+  </div>
+  <div id="imgurl" class="open-vip-b-ka" >
+  	<img id="month_url" src="../image/30.png" tapmode onclick="openUrl30()">
+    <img id="season_url" src="../image/90.png" tapmode onclick="openUrl90()">
+    <img id="year_url" src="../image/360.png" tapmode onclick="openUrl360()">
+    <img id="forever_url" src="../image/999.png" tapmode onclick="openUrl999()">
+  </div>
+  <section class="aui-content">
+      <div class="aui-card-list aui-margin-b-0">
+          <div class="aui-card-list-content aui-text-center">
+              <div style="padding-top:0.5rem"></div>
+              <p class="aui-margin-b-10"><div id="desc"></div></p>
+              <div style="padding-bottom:0.5rem"></div>
+          </div>
+      </div>
+  </section>
+  <div style="padding-top:0.2rem"></div>
+  <section class="aui-content">
+      <div class="aui-card-list aui-margin-b-0">
+          <div class="aui-card-list-content aui-text-center">
+              <div style="padding-top:0.5rem"></div>
+              <p class="aui-margin-b-10"><div id="contact"></div></p>
+              <div style="padding-bottom:0.5rem"></div>
+          </div>
+      </div>
+  </section>
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript">
+    var api_url = localStorage.getItem('api_url');
+    var uid = localStorage.getItem('user_id');
+    var token = localStorage.getItem('token');
+    apiready = function(){
+      api.parseTapmode();
+      newLoingdata();
+      var clipBoard = api.require('clipBoard');
+      clipBoard.get(function(ret, err) {
+          if (ret) {
+            if (ret.value.length == 15) {
+              var cardno = $api.byId('cardno');
+              cardno.value = ret.value;
+              api.toast({
+                  msg: '已帮您自动粘贴刚刚复制的内容',
+                  duration: 4000,
+                  location: 'middle'
+              });
+            }
+          }
+      });
+    }
+    function newLoingdata(){
+      api.ajax({
+          url: api_url+'/mobile/user/customer',
+          method: 'post',
+          headers: {
+              'uid':uid,
+              'token':token
+          },
+          data: {
+          }
+      },function(ret, err){
+          if (ret) {
+            if (ret.code != 0) {
+                api.hideProgress();
+                api.alert({
+                    title: '错误！',
+                    msg: ret.msg,
+                });
+                api.sendEvent({
+                  name: 'newLoingdata',
+                  extra: {
+                  }
+                });
+                localStorage.setItem('user_id','');
+                localStorage.setItem('user_name','');
+                localStorage.setItem('end_time','');
+                localStorage.setItem('token','');
+                localStorage.setItem('nickname','');
+                localStorage.setItem('avatar','');
+                localStorage.setItem('nickname_code','');
+                api.toast({
+                    msg: '已为你退出账号请重新登录！'
+                });
+                api.closeWin({
+                });
+                return;
+            }else if (ret.code == 0) {
+                //alert( JSON.stringify( ret.data ) );
+                localStorage.setItem('contact',ret.data['contact'].replace(/\n/g,"<br/>").trim());
+                localStorage.setItem('contact1',ret.data['contact']);
+                localStorage.setItem('month_url',ret.data['month_url']);
+                localStorage.setItem('season_url',ret.data['season_url']);
+                localStorage.setItem('year_url',ret.data['year_url']);
+                localStorage.setItem('forever_url',ret.data['forever_url']);
+                localStorage.setItem('is_online_buy',ret.data['is_online_buy']);
+                localStorage.setItem('desc',ret.data['desc'].replace(/\n/g,"<br/>").trim());
+                var desc = $api.byId('desc');
+                var content = $api.byId('contact');
+                desc.innerHTML = localStorage.getItem('desc');
+                content.innerHTML = localStorage.getItem('contact');
+                api.sendEvent({
+                  name: 'newLoingdata',
+                  extra: {
+                  }
+                });
+            }
+          } else {
+            alert('网络错误！');
+            return;
+          }
+      });
+    }
+
+
+    function openUrl30(){
+      if (localStorage.getItem('is_online_buy') == '0') {
+        keFu();
+        return;
+      }else if (localStorage.getItem('month_url') == '') {
+        keFu();
+        return;
+      }else {
+        toBanner(localStorage.getItem('month_url'));
+      }
+    }
+    function openUrl90(){
+      if (localStorage.getItem('is_online_buy') == '0') {
+        keFu();
+        return;
+      }else if (localStorage.getItem('season_url') == '') {
+        keFu();
+        return;
+      }else {
+        toBanner(localStorage.getItem('season_url'));
+      }
+    }
+    function openUrl360(){
+      if (localStorage.getItem('is_online_buy') == '0') {
+        keFu();
+        return;
+      }else if (localStorage.getItem('year_url') == '') {
+        keFu();
+        return;
+      }else {
+        toBanner(localStorage.getItem('year_url'));
+      }
+    }
+    function openUrl999(){
+      if (localStorage.getItem('is_online_buy') == '0') {
+        keFu();
+        return;
+      }else if (localStorage.getItem('forever_url') == '') {
+        keFu();
+        return;
+      }else {
+        toBanner(localStorage.getItem('forever_url'));
+      }
+    }
+
+    //访问地址
+    function toBanner(url){
+      var sys = api.systemType;
+      if (sys == 'ios') {
+        if (url == '') {
+          keFu();
+          return;
+        }else {
+          api.openApp({
+                 iosUrl: url
+         },function(ret,err){
+         });
+        }
+      }else {
+        if (url == '') {
+          keFu();
+          return;
+        }else {
+          api.openWin({
+              name: 'h5',
+              url: './h5.html',
+              pageParam: {
+                  url: url
+              }
+          });
+        }
+
+      }
+    }
+
+    function keFu(){
+      var dialogBox = api.require('dialogBox');
+      dialogBox.alert({
+          texts: {
+              content: localStorage.getItem('contact1'),
+              leftBtnTitle: '知道了',
+              rightBtnTitle: '复制'
+          },
+          styles: {
+              bg: '#fff',
+              w: 300,
+              content: {
+                  color: '#000',
+                  size: 16
+              },
+              left: {
+                  marginB: 7,
+                  marginL: 20,
+                  w: 130,
+                  h: 35,
+                  corner: 2,
+                  bg: '#ff7600',
+                  color: '#fff',
+                  size: 14
+              },
+              right: {
+                  marginB: 7,
+                  marginL: 10,
+                  w: 130,
+                  h: 35,
+                  corner: 2,
+                  bg: '#ff7600',
+                  color: '#fff',
+                  size: 14
+              }
+          }
+      }, function(ret) {
+          if (ret.eventType == 'left') {
+              var dialogBox = api.require('dialogBox');
+              dialogBox.close({
+                  dialogName: 'alert'
+              });
+          }else if (ret.eventType == 'right') {
+            var clipBoard = api.require('clipBoard');
+            clipBoard.set({
+                value: localStorage.getItem('contact1')
+            }, function(ret, err) {
+                if (ret) {
+                  api.toast({
+                      msg: '已复制号码到剪切板',
+                      duration: 2000
+                  });
+                  var dialogBox = api.require('dialogBox');
+                  dialogBox.close({
+                      dialogName: 'alert'
+                  });
+                } else {
+
+                }
+            });
+          }
+      });
+    }
+
+
+    //充值点卡
+    function loginOff(){
+      var cardno = $api.val($api.byId('cardno'));
+      if(cardno == ''){
+        api.alert({
+            title: '调皮~',
+            msg: '请输入卡密',
+        });
+        return;
+      }
+      if (uid<1) {
+        alert('请先登录');
+        api.openWin({
+            name: 'login',
+            url: './login.html',
+        });
+        return;
+      }else {
+        api.showProgress({
+            title: '登陆中...',
+            text: '请骚等...',
+            modal: false
+        });
+        api.ajax({
+            url: api_url+'/mobile/card/recharge',
+            method: 'post',
+            headers: {
+                'uid':uid,
+                'token':token
+            },
+            data: {
+                values: {
+                    cardno: cardno
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              if (ret.code != 0) {
+                  //alert( JSON.stringify( ret ) );
+                  api.hideProgress();
+                  api.alert({
+                      title: '错误~',
+                      msg: ret.msg,
+                  });
+                  return;
+                }else if (ret.code == 0) {
+                  api.hideProgress();
+                  api.alert({
+                      title: '恭喜!',
+                      msg: '充值成功',
+                  });
+                  localStorage.setItem('end_time',ret.data.end_time);
+                  api.sendEvent({
+                    name: 'newLoingdata',
+                    extra: {
+                    }
+                  });
+                  api.closeWin();
+                }
+            } else {
+              api.hideProgress();
+              api.alert({
+                  title: '糟糕~',
+                  msg: '网络似乎有点问题',
+              });
+            }
+        });
+      }
+    }
+</script>
+</html>

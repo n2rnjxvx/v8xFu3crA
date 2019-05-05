@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <style>
+       html,body{background-color: #4f4f4f;}
+    }
+    </style>
+</head>
+<body>
+  <section class="aui-content">
+    <div class="aui-content" style="width:96%;margin-left: 2%;margin-right: 2%;">
+      <p id="text" style="color: #ffffff;"></p>
+    </div>
+  </section>
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript" src="../script/doT.js"></script>
+<script type="text/javascript">
+var api_url = localStorage.getItem('api_url');
+apiready = function(){
+  list();
+  api.parseTapmode();
+  api.setRefreshHeaderInfo({
+      visible: true,
+      loadingImg: 'widget://image/refresh.png',
+      bgColor: '#fff',
+      textColor: '#333',
+      textDown: '下拉刷新...',
+      textUp: '松开刷新...',
+      showTime: true
+  }, function(ret, err){
+    if (err) {
+      api.toast({
+          msg: '加载数据失败',
+          duration: 2000,
+          location: 'middle'
+      });
+      api.refreshHeaderLoadDone();
+    }else {
+      list();
+      api.toast({
+          msg: '刷新完成！',
+          duration: 1000,
+          location: 'middle'
+      });
+      api.refreshHeaderLoadDone();
+    }
+  });
+  api.addEventListener({
+          name : 'scrolltobottom',
+          extra : {
+                  threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+          }
+  }, function(ret, err) {
+    api.toast({msg:'没数据了，别再拉了！'});
+  });
+}
+  function list(){
+    api.showProgress({
+        title: '加载中...',
+        modal: false
+    });
+    var div_list = $api.byId('div_list');
+    var template = $api.byId('template');
+    api.ajax({
+        url: api_url+'/mobile/novel/info?id='+api.pageParam.id,
+        method: 'post'
+    },function(ret, err){
+    	//console.log( JSON.stringify( ret ));
+        if (ret) {
+//          alert( JSON.stringify( ret ) );
+          localStorage.setItem('textdata',ret.data.content.replace(/<[^>]+>|&[^>]+;/g,"<br/>").trim());
+          localStorage.setItem('text',localStorage.getItem('textdata').replace(/\n/g,"").trim());
+          var txt = $api.byId('text');
+          //alert( JSON.stringify( text ) );
+          txt.innerHTML = localStorage.getItem('text');
+          api.hideProgress();
+          api.refreshHeaderLoadDone();
+        } else {
+          api.hideProgress();
+            //alert( JSON.stringify( err ) );
+        }
+    });
+}
+</script>
+</html>

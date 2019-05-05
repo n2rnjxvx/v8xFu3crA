@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auislide.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+</head>
+<body style="background-color:#fff">
+  <div id="aui-slide">
+      <div class="aui-slide-wrap" >
+        <div id="slidebox" class="aui-slide-wrap">
+        </div>
+        <div class="aui-slide-page-wrap"><!--分页容器--></div>
+      </div>
+  </div>
+  <div class="gonggao">
+    <div class="list-title-l">
+      <i class="iconfont icon-xitonggonggao" style="color:#ff5e3e;font-size: 1rem"></i>
+    </div>
+    <div class="gonggao-r">
+      <span id="gonggao" class="masked" style="color:#ff5e3e;font-size: 0.65rem;padding-top:0.3rem;">会员任性看</span>
+    </div>
+  </div>
+  <div class="aui-searchbar" id="search">
+      <div class="aui-searchbar-input aui-border-radius">
+          <i class="aui-iconfont aui-icon-search"></i>
+          <input type="search" placeholder="请输入搜索内容" id="ff-wd">
+          <div class="aui-searchbar-clear-btn">
+              <i class="aui-iconfont aui-icon-close"></i>
+          </div>
+      </div>
+      <div class="aui-searchbar-btn" tapmode>取消</div>
+  </div>
+  <div class="list-title">
+    <div class="list-title-l">
+      <span style="color:#585858;font-size: 0.7rem;" class="aui-text-danger masked">聚合搜索</span>
+    </div>
+  </div>
+    <div style="padding-top:0.2rem"></div>
+    <section class="aui-grid aui-margin-b-15">
+      <div class="aui-row" id="div_list_box">
+        <!--加载提示-->
+        <section class="m-noRecord"><div class="c-icon-noRecord"></div> <div class="c-info">奋力加载中...</div></section>
+        <!--加载提示-->
+      </div>
+    </section>
+      <div class="list-title">
+        <div class="list-title-l">
+          <span style="color:#585858;font-size: 0.7rem;" class="aui-text-danger masked">视频分类</span>
+        </div>
+      </div>
+      <div style="padding-top:0.2rem"></div>
+      <section class="aui-grid aui-margin-b-15">
+        <div class="aui-row" id="div_list_video">
+          <!--加载提示-->
+          <section class="m-noRecord"><div class="c-icon-noRecord"></div> <div class="c-info">奋力加载中...</div></section>
+          <!--加载提示-->
+        </div>
+      </section>
+  <div class="list-title">
+    <div class="list-title-l">
+      <span style="color:#585858;font-size: 0.7rem;" class="aui-text-danger masked">小说分类</span>
+    </div>
+  </div>
+  <div style="padding-top:0.2rem"></div>
+  <section class="aui-grid aui-margin-b-15">
+    <div class="aui-row" id="div_list_novel">
+      <!--加载提示-->
+      <section class="m-noRecord"><div class="c-icon-noRecord"></div> <div class="c-info">奋力加载中...</div></section>
+      <!--加载提示-->
+    </div>
+  </section>
+</body>
+<!--图片轮播-->
+<script type="text/x-dot-template" id="bannertpl">
+  {{~ it.advList : value : index }}
+    <div class="aui-slide-node bg-dark" tapmode onclick="toBanner('{{= value. link }}')">
+        <img src="{{= value. image }}" />
+    </div>
+  {{~}}
+</script>
+<!--盒子图标-->
+<script type="text/x-dot-template" id="boxtpl">
+  {{~ it.advList : value : index }}
+        <div class="aui-col-xs-3 pt-list" tapmode onclick="openWin('{{= value. link }}')">
+            <i class="aui-iconfont"><img src="{{= value. image }}"/></i>
+            <div class="aui-grid-label" style="font-size: 12px;">{{= value. name }}</div>
+        </div>
+  {{~}}
+</script>
+<!--视频分类图标-->
+<script type="text/x-dot-template" id="videotpl">
+  {{~ it.data : value : index }}
+        <div class="aui-col-xs-3 pt-list" tapmode onclick="opencate('{{= value. id }}','{{= value. title }}')">
+            <i class="aui-iconfont"><img src="{{= value. image }}"/></i>
+            <div class="aui-grid-label" style="font-size: 12px;">{{= value. title }}</div>
+        </div>
+  {{~}}
+</script>
+<!--小说分类图标-->
+<script type="text/x-dot-template" id="noveltpl">
+  {{~ it.data : value : index }}
+        <div class="aui-col-xs-3 pt-list" tapmode onclick="opentxt('{{= value. id }}','{{= value. title }}')">
+            <i class="aui-iconfont"><img src="{{= value. image }}"/></i>
+            <div class="aui-grid-label" style="font-size: 12px;">{{= value. title }}</div>
+        </div>
+  {{~}}
+</script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/doT.js"></script>
+<script type="text/javascript" src="../script/aui-tab.js"></script>
+<script type="text/javascript" src="../script/auipullrefresh.js"></script>
+<script type="text/javascript" src="../script/auislide.js"></script>
+<script type="text/javascript" src="../script/auilazyload.js" ></script>
+<script type="text/javascript">
+    var searchBar = document.querySelector(".aui-searchbar");
+    var searchBarInput = document.querySelector(".aui-searchbar input");
+    var searchBarBtn = document.querySelector(".aui-searchbar .aui-searchbar-btn");
+    var searchBarClearBtn = document.querySelector(".aui-searchbar .aui-searchbar-clear-btn");
+    if(searchBar){
+        searchBarInput.onclick = function(){
+            searchBarBtn.style.marginRight = 0;
+        }
+        searchBarInput.oninput = function(){
+            if(this.value.length){
+                searchBarClearBtn.style.display = 'block';
+                searchBarBtn.classList.add("aui-text-info");
+                searchBarBtn.textContent = "搜索";
+            }else{
+                searchBarClearBtn.style.display = 'none';
+                searchBarBtn.classList.remove("aui-text-info");
+                searchBarBtn.textContent = "取消";
+            }
+        }
+    }
+    searchBarClearBtn.onclick = function(){
+        this.style.display = 'none';
+        searchBarInput.value = '';
+        searchBarBtn.classList.remove("aui-text-info");
+        searchBarBtn.textContent = "取消";
+    }
+    searchBarBtn.onclick = function(){
+      so();
+    }
+</script>
+<script type="text/javascript">
+  var api_url = localStorage.getItem('api_url');
+  var uid = localStorage.getItem('user_id');
+  var token = localStorage.getItem('token');
+  apiready = function(){
+    getNav();
+    getBanner();
+    sourl();
+    api.parseTapmode();
+    api.setRefreshHeaderInfo({
+        visible: true,
+        loadingImg: 'widget://image/refresh.png',
+        bgColor: '#fff',
+        textColor: '#333',
+        textDown: '下拉刷新...',
+        textUp: '松开刷新...',
+        showTime: true
+    }, function(ret, err){
+      if (err) {
+        api.toast({
+            msg: '加载数据失败',
+            duration: 2000,
+            location: 'middle'
+        });
+        api.refreshHeaderLoadDone();
+      }else {
+        getBanner();
+        sourl();
+        getNav();
+        banNer();
+        api.toast({
+            msg: '刷新成功',
+            duration: 1000,
+            location: 'middle'
+        });
+        api.refreshHeaderLoadDone();
+      }
+    });
+  }
+
+  //搜索接口获取
+  function sourl(){
+    api.ajax({
+        url: api_url+'/mobile/index/menuFilm',
+        method: 'post',
+        headers: {
+            'uid':uid,
+            'token':token
+        }
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          localStorage.setItem('menuFilm',ret.data['link']);
+          //alert( JSON.stringify(ret.data.link) );
+        } else {
+            api.toast({
+                msg: '搜索接口加载失败！',
+                duration: 2000
+            });
+            //alert( '搜索接口加载失败！' );
+            api.hideProgress();
+        }
+    });
+  }
+
+  //分类定时执行数据加载
+  var timer = setInterval(function(){
+      getNav();
+  },1500)
+
+  //打开播放页
+  function openWin(url){
+    var time = localStorage.getItem('end_time');
+    var user_id = localStorage.getItem('user_id');
+    var username = localStorage.getItem('user_name');
+    var token = localStorage.getItem('token');
+    var is_ever = localStorage.getItem('is_ever');//是否是终身会员
+    var timestamp = Date.parse(new Date())/1000;
+    if(user_id==0){
+      api.alert({
+          title: '温馨提示',
+          msg: '请先登陆后使用',
+      });
+      api.openWin({
+          name: 'login',
+          url: './login.html',
+          delay: 300
+      });
+      return;
+    }
+    if (time>timestamp) {
+      setTimeout("playRadio();",1000);
+      var delay = 0;
+      if(api.systemType != 'ios'){
+          delay = 00;
+      }
+      api.openWin({
+          name: 'h5',
+          pageParam:{url:url},
+          url: 'h5.html',
+      });
+
+    }else if (is_ever == 1) {
+      setTimeout("playRadio();",2000);
+      var delay = 0;
+      if(api.systemType != 'ios'){
+          delay = 300;
+      }
+      api.openWin({
+          name: 'h5',
+          pageParam:{url:url},
+          url: 'h5.html',
+      });
+    }else if (time<timestamp){
+      var dialogBox = api.require('dialogBox');
+      dialogBox.alert({
+          texts: {
+              content: '您的VIP会员已过期，请续期！',
+              leftBtnTitle: '去续费',
+              rightBtnTitle: '关闭'
+          },
+          styles: {
+              bg: '#fff',
+              w: 300,
+              content: {
+                  color: '#000',
+                  size: 14
+              },
+              left: {
+                  marginB: 7,
+                  marginL: 20,
+                  w: 130,
+                  h: 35,
+                  corner: 2,
+                  bg: '#df025f',
+                  color: '#fff',
+                  size: 14
+              },
+              right: {
+                  marginB: 7,
+                  marginL: 10,
+                  w: 130,
+                  h: 35,
+                  corner: 2,
+                  bg: '#df025f',
+                  color: '#fff',
+                  size: 14
+              }
+          }
+      }, function(ret) {
+          if (ret.eventType == 'left') {
+            api.openWin({
+                name: 'open_vip_win',
+                url: './open_vip_win.html',
+                delay: 300
+            });
+              var dialogBox = api.require('dialogBox');
+              dialogBox.close({
+                  dialogName: 'alert'
+              });
+          }else if (ret.eventType == 'right') {
+            var dialogBox = api.require('dialogBox');
+            dialogBox.close({
+                dialogName: 'alert'
+            });
+          }
+      });
+    }
+  }
+
+  //打开视频分类
+  function opencate(id,title){
+      api.openWin({
+      name: 'list_win',
+      pageParam:{
+      cateid:id,
+      title:title
+      },
+          url: 'list_win.html',
+      });
+  }
+
+  //打开小说分类
+  function opentxt(id,title){
+      api.openWin({
+      name: 'txtlist_win',
+      pageParam:{
+      cateid:id,
+      title:title
+      },
+          url: 'txtlist_win.html',
+      });
+  }
+
+  //访问轮播地址
+  function toBanner(url){
+    if (url == '') {
+    }else {
+      api.openWin({
+          name: 'h5',
+          url: './h5.html',
+          pageParam: {
+              url: url
+          }
+      });
+    }
+  }
+
+  //轮播公告获取
+  function getBanner(){
+    var bannerid = $api.byId('slidebox');
+    var bannertpl = $api.byId('bannertpl');
+    api.ajax({
+        url: api_url+'/mobile/index/index',
+        method: 'get'
+    },function(ret, err){
+        if (ret) {
+          localStorage.setItem('ggtext',ret.data.notice);
+          var ggvert = $api.byId('gonggao');
+          ggvert.innerHTML = localStorage.getItem('ggtext');
+        } else {
+          api.toast({
+              msg: '公告加载失败！',
+              duration: 2000
+          });
+          //alert( '公告加载失败！' );
+          api.hideProgress();
+        }
+    });
+
+    api.ajax({
+        url: api_url+'/mobile/index/index',
+        method: 'get',
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          var pagefn = doT.template(bannertpl.text);
+          bannerid.innerHTML = pagefn(ret.data);
+//      alert( JSON.stringify( ret.data.advList ) );
+          banNer();
+        } else {
+          api.toast({
+              msg: '轮播图加载失败！',
+              duration: 2000
+          });
+            //alert( '轮播图加载失败！' );
+            api.hideProgress();
+        }
+    });
+  }
+
+  //影视获取
+  function getNav(){
+    //获取视频分类
+    var videoid = $api.byId('div_list_video');
+    var videotpl = $api.byId('videotpl');
+    api.ajax({
+        url: api_url+'/mobile/video/cateList',
+        method: 'get',
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          var pagefn = doT.template(videotpl.text);
+          videoid.innerHTML = pagefn(ret);
+//      alert( JSON.stringify(ret) );
+        } else {
+          api.toast({
+              msg: '视频分类加载失败！',
+              duration: 2000
+          });
+            //alert( '视频分类加载失败！' );
+            api.hideProgress();
+        }
+    });
+
+    //获取小说分类
+    var novelid = $api.byId('div_list_novel');
+    var noveltpl = $api.byId('noveltpl');
+    api.ajax({
+        url: api_url+'/mobile/Novel/cateList',
+        method: 'get',
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          var pagefn = doT.template(noveltpl.text);
+          novelid.innerHTML = pagefn(ret);
+//      alert( JSON.stringify(ret) );
+        } else {
+          api.toast({
+              msg: '小说分类加载失败！',
+              duration: 2000
+          });
+            //alert( '小说分类加载失败！' );
+            api.hideProgress();
+        }
+    });
+
+    //获取盒子
+    var boxid = $api.byId('div_list_box');
+    var boxtpl = $api.byId('boxtpl');
+    api.ajax({
+        url: api_url+'/mobile/index/box',
+        method: 'post',
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          var pagefn = doT.template(boxtpl.text);
+          boxid.innerHTML = pagefn(ret.data);
+//      alert( JSON.stringify(ret) );
+        } else {
+          api.toast({
+              msg: '影视盒子加载失败！',
+              duration: 2000
+          });
+            //alert( '影视盒子加载失败！' );
+            api.hideProgress();
+        }
+    });
+    clearInterval(timer);
+  }
+
+  //幻灯轮播图
+  function banNer(){
+    var slide = new auiSlide({
+        container:document.getElementById("aui-slide"),
+        // "width":300,
+        "height":150,
+        "speed":400,
+        "pageShow":true,
+        "autoPlay": 5000,
+        "pageStyle":'dot',
+        "loop":true,
+        'dotPosition':'center',
+    });
+  }
+  new auiLazyload({
+      errorImage:'../image/error-img.jpg'
+  });
+
+  function so(){
+     var wd = $api.val($api.byId('ff-wd'));
+     var link = localStorage.getItem('menuFilm');
+     api.openWin({
+     name: 'h5',
+     url: './h5.html',
+     pageParam: {
+     url: link+wd
+         }
+     });
+}
+</script>
+</html>

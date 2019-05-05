@@ -1,0 +1,501 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>底部导航</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/iconfont.css">
+    <style>
+        header{background: linear-gradient(to top,#df025f 0,#ff1b7c 100%);}
+        header ul li {display: none; color: #333; position: relative;font-size: 0.9rem;  }
+        header ul li.active{ display: block; }
+        #footer{  background-color: #ffffff;}
+        #footer ul li{  height: 2.25rem; padding-top: 1.25rem; padding-bottom: 1px; background: url() no-repeat center 2px; font-size: 0.6rem;background-size: auto 1.1rem; text-align: center; }
+        #footer ul li.active{ color: #df025f; }
+        #footer ul li:nth-child(1){ background-image: url(./image/footer/shouye.png); }
+        #footer ul li:nth-child(2){ background-image: url(./image/footer/yingyuan.png); }
+        #footer ul li:nth-child(3){ background-image: url(./image/footer/zhibo.png); }
+        #footer ul li:nth-child(4){ background-image: url(./image/footer/faxian.png); }
+        #footer ul li:nth-child(5){ background-image: url(./image/footer/wode.png); }
+        #footer ul li:nth-child(1).active{ background-image: url(./image/footer/shouye2.png); }
+        #footer ul li:nth-child(2).active{ background-image: url(./image/footer/yingyuan2.png); }
+        #footer ul li:nth-child(3).active{ background-image: url(./image/footer/zhibo2.png); }
+        #footer ul li:nth-child(4).active{ background-image: url(./image/footer/faxian2.png); }
+        #footer ul li:nth-child(5).active{ background-image: url(./image/footer/wode2.png); }
+        .flex-con{
+          overflow: auto;
+          background-color:#fff;
+        }
+/*文字渐变动画*/
+        .maskedtitle{
+              text-align: center;
+              background-image: -webkit-linear-gradient(left, #ffe4b1, #ffffff 25%, #ffcb67 50%, #ffffff 75%, #ffe4b1);
+              -webkit-text-fill-color: transparent;
+              -webkit-background-clip: text;
+              -webkit-background-size: 200% 100%;
+              -webkit-animation: masked-animation 4s infinite linear;
+            }
+          @-webkit-keyframes masked-animation {
+               0%{ background-position: 0 0;}
+               100% { background-position: -100% 0;}
+          }
+
+/*文字渐变动画*/
+    </style>
+    <script type="text/javascript">
+      localStorage.setItem('api_url',"http://api.qcjr888.com");
+      localStorage.setItem('api_name',"Cola");
+      localStorage.setItem('share_content',"软件分享描述文字写在这里");
+      localStorage.setItem('ewm_link',"http://api.k780.com:88/?app=qr.get&data=");
+    </script>
+</head>
+<body>
+<div id="wrap" class="flex-wrap flex-vertical">
+    <header class="aui-bar aui-bar-nav" id="header">
+        <ul>
+          <li class="border-b active"><a class="aui-title maskedtitle"><div id="Name">首页</div></a></li>
+          <li class="border-b"><a class="aui-title maskedtitle">直播大全</a></li>
+          <li class="border-b"><a class="aui-title maskedtitle">快看视频</a></li>
+          <li class="border-b"><a class="aui-title maskedtitle">资源中心</a></li>
+          <li class="border-b"><a class="aui-title maskedtitle">会员中心</a></li>
+        </ul>
+        <a class="aui-pull-right" onclick="share()">
+            <span class="aui-iconfont aui-icon-share"></span>
+        </a>
+    </header>
+    <div id="main" class="flex-con">
+    </div>
+    <div id="footer" class="border-t">
+        <ul class="flex-wrap" style="font-weight:bold">
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con active" >首页</li>
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con" >直播</li>
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con" >快看</li>
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con" >资源</li>
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con" >我的</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/doT.js"></script>
+<script type="text/javascript">
+var header = $api.byId('aui-header');
+   $api.fixStatusBar(header);
+   var headerPos = $api.offset(header);
+    var api_url = localStorage.getItem('api_url');
+    var share_content = localStorage.getItem('share_content');
+    var uid  =  '';
+    var appName = localStorage.getItem('api_name');
+    var Name = $api.byId('Name');
+    Name.innerHTML = appName;
+    //var system = 0;
+    apiready = function () {
+        $api.fixStatusBar( $api.dom('header') );
+        api.setStatusBarStyle({
+            style: 'dark',
+            color: 'rgba(0,0,0,0)'
+        });
+        if (localStorage.getItem('user_id')>1) {
+          uid = localStorage.getItem('user_id');
+        }else {
+          uid = 0;
+        }
+        funIniGroup();
+        //getcheckUpdate();
+        //var appVersion = api.appVersion;
+        //alert(appVersion);
+        if (api.systemType != 'ios') {
+          var system = 1;
+          //alert(api.appVersion)
+        }else {
+          var system = 2;
+        }
+
+        api.ajax({
+            url: api_url+'/mobile/index/checkUpdate',
+            method: 'post',
+            data: {
+                values: {
+                    version:api.appVersion,
+                    type:system
+                }
+            }
+        },function(ret, err){
+            if (ret) {
+              var update = ret.data.is_update;
+              var url = '';
+              var intro = '';
+              if (system == 1) {
+                  url = ret.data.url;
+                  intro = '==安卓有新版本啦！==\n\n版本号：'+ret.data.version+'\n\n更新详情：'+ret.data.intro;
+              }else if (system == 2) {
+                  url = ret.data.url;
+                  intro = '==苹果有新版本啦！==\n\n版本号：'+ret.data.version+'\n\n更新详情：'+ret.data.intro;
+              }
+              if (update == 1) {
+                var dialogBox = api.require('dialogBox');
+                //alert(system);
+                dialogBox.alert({
+                    texts: {
+                        content: intro,
+                        leftBtnTitle: '关闭',
+                        rightBtnTitle: '更新'
+                    },
+                    styles: {
+                        bg: '#fff',
+                        w: 300,
+                        content: {
+                            color: '#000',
+                            size: 14
+                        },
+                        left: {
+                            marginB: 7,
+                            marginL: 20,
+                            w: 130,
+                            h: 35,
+                            corner: 2,
+                            bg: '#df025f',
+                            color: '#fff',
+                            size: 14
+                        },
+                        right: {
+                            marginB: 7,
+                            marginL: 10,
+                            w: 130,
+                            h: 35,
+                            corner: 2,
+                            bg: '#df025f',
+                            color: '#fff',
+                            size: 14
+                        }
+                    }
+                }, function(ret) {
+                    if (ret.eventType == 'left') {
+                        var dialogBox = api.require('dialogBox');
+                        dialogBox.close({
+                            dialogName: 'alert'
+                        });
+                    }else if (ret.eventType == 'right') {
+                      toBanner(url);
+                      var dialogBox = api.require('dialogBox');
+                      dialogBox.close({
+                          dialogName: 'alert'
+                      });
+                    }
+                });
+              }
+            } else {
+                api.hideProgress();
+            }
+        });
+        //启动是否开启检测
+        api.ajax({
+            url: api_url+'/mobile/index/kaiguan',
+            method: 'post',
+        },function(ret, err){
+            if (ret) {
+              var update = ret.data.is;
+              if (update == 1) {
+                var dialogBox = api.require('dialogBox');
+                //alert(update);
+                dialogBox.taskPlan({
+                  rect: {
+                      w: 300
+                  },
+                    texts: {
+                            mainTitle: '维护中...',
+                            subTitle: '===详情内容===',
+                            content: [{
+                               text: ret.data.notice
+                            }],
+                            btnTitle: '确定'
+                            },
+                    styles: {
+                            bg: '#fff',
+                            corner: 10,
+                            main: {
+                                marginT: 20,
+                                color: '#000',
+                                size: 14,
+                                bold: true
+                            },
+                            sub: {
+                                marginT: 8,
+                                color: '#999999',
+                                size: 12,
+                            },
+                            content: [{
+                                bg: '#fff',
+                                marginT: 20,
+                                marginL: 10,
+                                w: 280,
+                                h: 80 ,
+                                align: 'center',
+                                color: '#df025f',
+                                size: 13
+                            }],
+                            ok: {
+                                marginT: 10,
+                                marginB: 10,
+                                marginL: 10,
+                                w: 280,
+                                h: 35,
+                                bg: '#df025f',
+                                color: '#fff',
+                                size: 12
+                            }
+                            }
+                }, function(ret) {
+                    if (ret.eventType == 'ok') {
+                      closeWin();
+                    }else{
+                    }
+                });
+              }
+            } else {
+                api.hideProgress();
+            }
+        });
+
+        //监听网络连接事件
+        var connectionType = api.connectionType;
+        if (connectionType == 'wifi') {
+          api.toast({
+                  msg: '当前网络为wifi网络，请尽情使用吧！',
+                  duration: 2000,
+                  location: 'bottom'
+          });
+        }else if (connectionType == 'none') {
+          api.toast({
+                  msg: '当前网络为未知状态，请注意流量使用！',
+                  duration: 2000,
+                  location: 'bottom'
+          });
+        }else if (connectionType == '4g') {
+          api.toast({
+                  msg: '当前网络为4g网络，土豪请随意使用吧！',
+                  duration: 2000,
+                  location: 'bottom'
+          });
+        }else {
+          api.toast({
+                  msg: '当前网络为普通网络，请注意流量使用！',
+                  duration: 2000,
+                  location: 'bottom'
+          });
+        }
+
+        api.addEventListener({
+            name: 'online'
+        }, function(ret, err) {
+          var connectionType = api.connectionType;
+          if (connectionType == 'wifi') {
+            api.toast({
+                    msg: '已切换为wifi网络，请尽情使用吧！',
+                    duration: 2000,
+                    location: 'bottom'
+            });
+          }else {
+            api.toast({
+                    msg: '已切换为移动网络，请注意流量使用！',
+                    duration: 2000,
+                    location: 'bottom'
+            });
+          }
+        });
+
+        //按两次退出
+        var backSecond = 0;
+        api.addEventListener({
+                name: 'keyback'
+        }, function(ret, err) {
+                var curSecond = (new Date().getTime()) / 1000;
+                if (Math.abs(curSecond - backSecond) > 2) {
+                        backSecond = curSecond;
+                        api.toast({
+                                msg: '再按一次退出',
+                                duration: 2000,
+                                location: 'bottom'
+                        });
+                } else {
+                  api.setScreenOrientation({
+                      orientation: 'portrait_up'
+                  });
+                  api.closeWin();
+                }
+        });
+
+    }
+    //访问下载地址
+    function toBanner(url){
+      if (url == '') {
+      }else {
+        api.openWin({
+            name: 'h5',
+            url: './html/h5.html',
+            pageParam: {
+                url: url
+            }
+        });
+      }
+    }
+    //页面切换
+    function funIniGroup(){
+        var eHeaderLis = $api.domAll('header li'),
+            frames = [];
+        for (var i = 0,len = eHeaderLis.length; i < len; i++) {
+            if(i==1)
+            {
+               frames.push({
+                name: 'frame'+i,
+                url: './html/frame'+i+'.html',
+                bgColor : '#f5f5f5',
+                //页面弹动 bounces:true
+                bounces:false
+               })
+            }
+            else
+            {
+                frames.push({
+                name: 'frame'+i,
+                url: './html/frame'+i+'.html',
+                bgColor : '#f5f5f5',
+                 bounces:true
+               })
+            }
+        }
+        api.openFrameGroup({
+            name: 'group',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            index: 0,
+            frames: frames
+        }, function (ret, err) {
+
+        });
+    }
+
+    // 随意切换按钮
+    function randomSwitchBtn( tag ) {
+        if( tag == $api.dom('#footer li.active') )return;
+        var eFootLis = $api.domAll('#footer li'),
+            eHeaderLis = $api.domAll('header li'),
+            index = 0;
+        for (var i = 0,len = eFootLis.length; i < len; i++) {
+            if( tag == eFootLis[i] ){
+                index = i;
+            }else{
+                $api.removeCls(eFootLis[i], 'active');
+                $api.removeCls(eHeaderLis[i], 'active');
+            }
+        }
+        $api.addCls( eFootLis[index], 'active');
+        $api.addCls( eHeaderLis[index], 'active');
+        api.setFrameGroupIndex({
+            name: 'group',
+            index: index
+        });
+    }
+    //分享方法
+    function share() {
+      var sys = api.systemType;
+      var sharedModule = api.require("shareAction");
+      if (sys == 'ios') {
+          var sharedMsg = {
+                  text : share_content+localStorage.getItem('ios_download_url'),
+                  type : "text",
+          };
+        }else {
+          var sharedMsg = {
+                  text : share_content+localStorage.getItem('android_download_url'),
+                  type : "text",
+          };
+      }
+      sharedModule.share(sharedMsg);
+    };
+
+    //软件更新
+    function getcheckUpdate(){
+      api.ajax({
+          url: api_url+'/mobile/index/checkUpdate',
+          method: 'post',
+          data: {
+              values: {
+                  version:api.appVersion,
+                  type:type
+              }
+          }
+      },function(ret, err){
+          if (ret) {
+            //渲染模板
+            //localStorage.setItem('count',ret.data.count);
+            //var count = $api.byId('count');
+            //count.innerHTML = localStorage.getItem('count');
+            //var pagefn = doT.template(navtpl.text);
+            //navid.innerHTML = pagefn(ret);
+        alert( JSON.stringify(ret) );
+          } else {
+              alert( '直播加载失败！' );
+              api.hideProgress();
+          }
+      });
+    }
+
+    //启动弹窗--暂未启用
+    function guanzhu(){
+      var dialogBox = api.require('dialogBox');
+      dialogBox.discount({
+          tapClose: true,
+          rect: {
+              w: 300,
+              h: 300
+          },
+          styles: {
+              bg: '#FFF',
+              image: {
+                  path: 'widget://image/user_img.png',
+                  marginB: 150
+              },
+              cancel: {
+                  icon: 'widget://image/close.png',
+                  w: 50,
+                  h: 50
+              }
+          }
+      }, function(ret) {
+          if (ret.eventType == 'image') {
+            api.openWin({
+                name: 'login',
+                url: './html/login.html',
+                delay: 300
+            });
+              var dialogBox = api.require('dialogBox');
+              dialogBox.close({
+                  dialogName: 'alert'
+              });
+          }else if (ret.eventType == 'cancel') {
+            var dialogBox = api.require('dialogBox');
+            dialogBox.close({
+                dialogName: 'alert'
+            });
+          }
+      });
+    }
+
+    //退出软件清除缓存
+    function closeWin(){
+      //cleaCache();
+      api.closeWin();
+    }
+</script>

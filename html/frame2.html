@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+    .box{
+      height:3rem;
+      width:3rem;
+      margin-right:5rem;
+      margin-left:1rem;
+      text-align:center;
+      float:left;
+      background:rgba(99, 99, 99, 0.5);
+      border-radius:100rem;
+      position:fixed;
+      bottom:2rem;
+      z-index:999;
+    }
+    .box-name{
+        float: left;
+        line-height: 100px;/*让黄色div中的文字内容垂直居中*/
+        text-align: center;/*让文字水平居中*/
+        position: absolute;
+        top:50%;
+        margin-top: -50px;
+        margin-left: 1rem;
+        color: #fff;
+        font-size: 0.9rem;
+    }
+    </style>
+</head>
+<body style="background-color:#fff">
+  <div class="aui-searchbar" id="search">
+      <div class="aui-searchbar-input aui-border-radius">
+          <i class="aui-iconfont aui-icon-search"></i>
+          <input type="search" placeholder="请输入搜索内容" id="ff-wd">
+          <div class="aui-searchbar-clear-btn">
+              <i class="aui-iconfont aui-icon-close"></i>
+          </div>
+      </div>
+      <div class="aui-searchbar-btn" tapmode>取消</div>
+  </div>
+  <div class="box">
+    <div class="box-name"><span id="mes">..</span>s</div>
+  </div>
+  <div class="list-title">
+    <div class="list-title-l">
+      <span style="color:#585858;font-size: 0.7rem;" class="aui-text-danger masked">快看视频，每15秒刷新一次！</span>
+    </div>
+  </div>
+  <div style="padding-top:0.2rem"></div>
+      <div class="game-page">
+      <div class="zhubo-list-wrap">
+        <ul class="clearfix" id="div_list">
+          <!--加载提示-->
+          <section class="m-noRecord"><div class="c-icon-noRecord"></div> <div class="c-info">奋力加载中...</div></section>
+          <!--加载提示-->
+        </ul>
+      </div>
+    </div>
+  </body>
+  <script type="text/x-dot-template" id="template">
+  {{~ it : value : index }}
+      <li onclick="openWin('{{= value.link }}','{{= value. title }}')" >
+        <div class="video-mask-box">
+        <img src="{{= value. image }}" alt="{{= value. title }}" class="game-pic">
+        </div>
+        <div class="til">{{= value. title }}</div>
+      </li>
+  {{~}}
+  </script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/doT.js"></script>
+<script type="text/javascript">
+    var searchBar = document.querySelector(".aui-searchbar");
+    var searchBarInput = document.querySelector(".aui-searchbar input");
+    var searchBarBtn = document.querySelector(".aui-searchbar .aui-searchbar-btn");
+    var searchBarClearBtn = document.querySelector(".aui-searchbar .aui-searchbar-clear-btn");
+    if(searchBar){
+        searchBarInput.onclick = function(){
+            searchBarBtn.style.marginRight = 0;
+        }
+        searchBarInput.oninput = function(){
+            if(this.value.length){
+                searchBarClearBtn.style.display = 'block';
+                searchBarBtn.classList.add("aui-text-info");
+                searchBarBtn.textContent = "搜索";
+            }else{
+                searchBarClearBtn.style.display = 'none';
+                searchBarBtn.classList.remove("aui-text-info");
+                searchBarBtn.textContent = "取消";
+            }
+        }
+    }
+    searchBarClearBtn.onclick = function(){
+        this.style.display = 'none';
+        searchBarInput.value = '';
+        searchBarBtn.classList.remove("aui-text-info");
+        searchBarBtn.textContent = "取消";
+    }
+    searchBarBtn.onclick = function(){
+      so();
+    }
+</script>
+<script type="text/javascript">
+  var api_url = localStorage.getItem('api_url');
+  var uid = localStorage.getItem('user_id');
+  var token = localStorage.getItem('token');
+  var i = 1800;
+  apiready = function(){
+    getBanner();
+    sourl();
+    api.parseTapmode();
+    api.setRefreshHeaderInfo({
+        visible: true,
+        loadingImg: 'widget://image/refresh.png',
+        bgColor: '#fff',
+        textColor: '#333',
+        textDown: '下拉刷新...',
+        textUp: '松开刷新...',
+        showTime: true
+    }, function(ret, err){
+      if (err) {
+        api.toast({
+            msg: '加载数据失败',
+            duration: 2000,
+            location: 'middle'
+        });
+        api.refreshHeaderLoadDone();
+      }else {
+        i = 15;
+        getBanner();
+        sourl();
+        api.toast({
+            msg: '刷新成功!下拉动一次都会显示不一样的数据哦~',
+            duration: 1000,
+            location: 'middle'
+        });
+        api.refreshHeaderLoadDone();
+      }
+    });
+    api.ajax({
+        url: api_url+'/mobile/index/menuFilm',
+        method: 'post',
+        headers: {
+            'uid':uid,
+            'token':token
+        }
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          localStorage.setItem('menuFilm',ret.data['link']);
+          //alert( JSON.stringify(ret.data.link) );
+        } else {
+          api.toast({
+              msg: '搜索接口加载失败！',
+              duration: 2000
+          });
+            //alert( '搜索接口加载失败！' );
+            api.hideProgress();
+        }
+    });
+  }
+
+  var intervalid;
+  intervalid = setInterval("fun()", 1000);
+  function fun() {
+  if (i == 0) {
+  i = 1800;
+  getBanner();
+  cleaCache();
+  }
+  document.getElementById("mes").innerHTML = i;
+  i--;
+  }
+
+  //搜索接口获取
+  function sourl(){
+    api.ajax({
+        url: api_url+'/mobile/index/menuFilm',
+        method: 'post',
+        headers: {
+            'uid':uid,
+            'token':token
+        }
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          localStorage.setItem('menuFilm',ret.data['link']);
+          //alert( JSON.stringify(ret.data.link) );
+        } else {
+            api.toast({
+                msg: '搜索接口加载失败！',
+                duration: 2000
+            });
+            //alert( '搜索接口加载失败！' );
+            api.hideProgress();
+        }
+    });
+  }
+
+  //打开播放页
+  function openWin(link,title){
+    var time = localStorage.getItem('end_time');
+    var user_id = localStorage.getItem('user_id');
+    var username = localStorage.getItem('user_name');
+    var token = localStorage.getItem('token');
+    var is_ever = localStorage.getItem('is_ever');//是否是终身会员
+    var timestamp = Date.parse(new Date())/1000;
+    if(user_id==0){
+      api.alert({
+          title: '温馨提示',
+          msg: '请先登陆后使用',
+      });
+      api.openWin({
+          name: 'login',
+          url: './login.html',
+          delay: 300
+      });
+      return;
+    }
+    if (time>timestamp) {
+      setTimeout("playRadio();",1000);
+      var delay = 0;
+      if(api.systemType != 'ios'){
+          delay = 300;
+      }
+      api.openWin({
+          name: 'm3u8_play',
+          pageParam:{link:link,title:title},
+          url: 'm3u8_play.html',
+      });
+    }else if (is_ever == 1) {
+      setTimeout("playRadio();",2000);
+      var delay = 0;
+      if(api.systemType != 'ios'){
+          delay = 300;
+      }
+      api.openWin({
+          name: 'm3u8_play',
+          pageParam:{link:link,title:title},
+          url: 'm3u8_play.html',
+      });
+    }else if (time<timestamp){
+      var dialogBox = api.require('dialogBox');
+      dialogBox.alert({
+          texts: {
+              content: '您的VIP会员已过期，请续期！',
+              leftBtnTitle: '去续费',
+              rightBtnTitle: '关闭'
+          },
+          styles: {
+              bg: '#fff',
+              w: 300,
+              content: {
+                  color: '#000',
+                  size: 14
+              },
+              left: {
+                  marginB: 7,
+                  marginL: 20,
+                  w: 130,
+                  h: 35,
+                  corner: 2,
+                  bg: '#df025f',
+                  color: '#fff',
+                  size: 14
+              },
+              right: {
+                  marginB: 7,
+                  marginL: 10,
+                  w: 130,
+                  h: 35,
+                  corner: 2,
+                  bg: '#df025f',
+                  color: '#fff',
+                  size: 14
+              }
+          }
+      }, function(ret) {
+          if (ret.eventType == 'left') {
+            api.openWin({
+                name: 'open_vip_win',
+                url: './open_vip_win.html',
+                delay: 300
+            });
+              var dialogBox = api.require('dialogBox');
+              dialogBox.close({
+                  dialogName: 'alert'
+              });
+          }else if (ret.eventType == 'right') {
+            var dialogBox = api.require('dialogBox');
+            dialogBox.close({
+                dialogName: 'alert'
+            });
+          }
+      });
+    }
+  }
+
+  //轮播公告获取
+  function getBanner(){
+    var div_list = $api.byId('div_list');
+    var template = $api.byId('template');
+    api.ajax({
+        url: api_url+'/mobile/video/getRandom',
+        method: 'post',
+    },function(ret, err){
+        if (ret) {
+          //渲染模板
+          var pagefn = doT.template(template.text);
+          div_list.innerHTML = pagefn(ret.data);
+          //alert( JSON.stringify( ret.data ) );
+        } else {
+          api.toast({
+              msg: '数据加载失败！',
+              duration: 2000
+          });
+            //alert( '数据加载失败！' );
+            api.hideProgress();
+        }
+    });
+  }
+
+  function so(){
+     var wd = $api.val($api.byId('ff-wd'));
+     var link = localStorage.getItem('menuFilm');
+     api.openWin({
+     name: 'h5',
+     url: './h5.html',
+     pageParam: {
+     url: link+wd
+         }
+     });
+  }
+
+  //清理缓存
+  function cleaCache(){
+    api.getCacheSize(function(ret) {
+        var size = ret.size/1024/1024;
+        var mb = size.toFixed(2)
+        //alert(mb);
+        if (mb > '10') {
+          api.clearCache(function() {
+              api.toast({
+                  msg: '缓存数据超过10MB自动清除完成'
+              });
+        });
+        }
+    });
+  }
+
+  //计算缓存
+  function getCache(){
+    api.getCacheSize(function(ret) {
+        var size = ret.size/1024/1024;
+        var mb = size.toFixed(2)
+    });
+  }
+</script>
+</html>

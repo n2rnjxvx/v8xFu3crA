@@ -1,0 +1,324 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <style>
+        header{background: linear-gradient(to top,#df025f 0,#ff1b7c 100%);}
+        header ul li {display: none; color: #333; position: relative;font-size: 0.9rem;  }
+        header ul li.active{ display: block; }
+        .maskedtitle{
+              text-align: center;
+              background-image: -webkit-linear-gradient(left, #ffe4b1, #ffffff 25%, #ffcb67 50%, #ffffff 75%, #ffe4b1);
+              -webkit-text-fill-color: transparent;
+              -webkit-background-clip: text;
+              -webkit-background-size: 200% 100%;
+              -webkit-animation: masked-animation 4s infinite linear;
+            }
+          @-webkit-keyframes masked-animation {
+               0%{ background-position: 0 0;}
+               100% { background-position: -100% 0;}
+          }
+    </style>
+</head>
+<body style="background-color:#df025f">
+  <header class="aui-bar aui-bar-nav" id="aui-header" style="font-size:16px">
+      <a class="aui-btn aui-pull-left"  tapmode onclick="closeWin() "style="color:#ffffff;font-size:18px">
+          <span class="aui-iconfont aui-icon-left" style="color:#ffffff;font-size:18px"> </span>返回
+      </a>
+      <div class="aui-title maskedtitle" style="color:#ffffff;font-size:18px" id="title">账号注册</div>
+  </header>
+  <div class="myui-fromzc">
+    <ul class="myui-from-list">
+      <li class="myui-from-list-item">
+        <div class="myui-code">
+          <input id="username" type="tel"  minlength="11" maxlength="11" placeholder="输入手机号码" class="myui-from-list-item-input">
+        </div>
+      </li>
+      <li class="myui-from-list-item">
+        <input id="password" type="password" placeholder="设置密码" class="myui-from-list-item-input">
+      </li>
+	    <li class="myui-from-list-item">
+        <input id="password_reg" type="password" placeholder="再输入一次密码" class="myui-from-list-item-input">
+      </li>
+       <li class="myui-from-list-item">
+        <input id="referrer" type="text" minlength="6" maxlength="10" placeholder="请输入邀请码" class="myui-from-list-item-input">
+      </li>
+      <li class="myui-from-list-item">
+        <button id="btn2" type="button" name="button" class="myui-from-list-item-button" onclick="toReg()">立即注册</button>
+      </li>
+    </ul>
+  </div>
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript">
+    var api_url = localStorage.getItem('api_url');
+    var username = '';
+    var password = '';
+	  var password02 = '';
+    apiready = function () {
+      api.parseTapmode();
+      var header = $api.byId('aui-header');
+      $api.fixStatusBar(header);
+      var headerPos = $api.offset(header);
+      var body_h = $api.offset($api.dom('body')).h;
+    }
+
+    //注册
+    function toReg(){
+      var username = $api.val($api.byId('username'));
+      var password = $api.val($api.byId('password'));
+	    var password_reg = $api.val($api.byId('password_reg'));
+      var referrer = $api.val($api.byId('referrer'));
+      var myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0-9]{1})|(15[0-3]{1})|(15[4-9]{1})|(18[0-9]{1})|(199))+\d{8})$/;
+      var passreg = /^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*]+$/;
+      if(username == ''){
+        api.alert({
+            title: '警告！',
+            msg: '请输入登录账号',
+        });
+        return;
+      }
+      if(password == '' || password_reg == ''){
+        api.alert({
+            title: '警告！',
+            msg: '请输入两次重复的密码',
+        });
+        return;
+      }
+       if(referrer == ''){
+         api.alert({
+             title: '警告！',
+             msg: '请输入邀请码',
+         });
+         return;
+       }
+      if(username.length < 11){
+        api.alert({
+            title: '警告！',
+            msg: '请输入11位以上的手机号',
+        });
+        return;
+      }
+      if (!myreg.test(username)) {
+        api.alert({
+            title: '警告！',
+            msg: '请输入真实的手机号',
+        });
+        return;
+      }
+      if (!passreg.test(password)) {
+        api.alert({
+            title: '警告！',
+            msg: '请输入字母+数字/字母+特殊字符/数字+特殊字符的密码',
+        });
+        return;
+      }
+	  if ($api.byId('password').value != $api.byId('password_reg').value) {
+                $api.byId('password_reg').focus();
+                api.toast({
+                    msg : '两次密码不一致，请重新输入!'
+                });
+                return;
+                 }
+	      if(localStorage.getItem('imei') == api.deviceId){
+          var dialogBox = api.require('dialogBox');
+          dialogBox.alert({
+          tapClose: true,
+          texts: {
+              title: '禁止注册',
+              content: '您的设备已经注册过了，请不要再次注册！',
+              leftBtnTitle: '返回登录',
+              rightBtnTitle: '取消注册'
+          },
+          styles: {
+              bg: '#fff',
+              w: 300,
+              h: 35,
+              corner:2,
+              title: {
+                  marginT: 20,
+                  icon: 'widget://res/gou.png',
+                  iconSize: 40,
+                  titleSize: 14,
+                  titleColor: '#000'
+              },
+              content: {
+                  color: '#000',
+                  size: 14
+              },
+              left: {
+                  marginB: 7,
+                  marginL: 20,
+                  w: 130,
+                  h: 35,
+                  corner: 2,
+                  color: '#fff',
+                  bg: '#80b1f3',
+                  size: 12
+              },
+              right: {
+                  marginB: 7,
+                  marginL: 10,
+                  w: 130,
+                  h: 35,
+                  corner: 2,
+                  color: '#fff',
+                  bg: '#80b1f3',
+                  size: 12
+              }
+          }
+      }, function(ret) {
+        if (ret.eventType == 'left') {
+          api.closeWin({
+          });
+          var dialogBox = api.require('dialogBox');
+          dialogBox.close({
+              dialogName: 'alert'
+          });
+        }else if (ret.eventType == 'right') {
+          var dialogBox = api.require('dialogBox');
+          dialogBox.close({
+              dialogName: 'alert'
+          });
+        }
+    });
+		return false;
+      }
+      username = $api.val($api.byId('username'));
+      password = $api.val($api.byId('password'));
+	    password02 = $api.val($api.byId('password_reg'));
+      api.showProgress({
+          title: '注册中...',
+          text: '请稍等...',
+          modal: false
+      });
+      api.ajax({
+          url: api_url+'/mobile/user/register',
+          method: 'post',
+          data: {
+              values: {
+                username:username,
+                password:password,
+                referrer:referrer,
+                imei:api.deviceId
+              }
+          }
+      },function(ret, err){
+          if (ret) {
+              if (ret.code != 0) {
+                //alert( JSON.stringify( ret ) );
+                api.hideProgress();
+                api.alert({
+                    title: '错误~',
+                    msg: ret.msg,
+                });
+                return;
+              }else if (ret.code == 0) {
+                api.hideProgress();
+                api.alert({
+                    title: '注册成功！',
+                    msg: '当前身份：体验会员',
+                });
+                api.closeWin({
+                    name: 'login'
+                });
+                //openLogin();
+                //请求数据库并存储用户信息
+                var api_url = localStorage.getItem('api_url');
+                api.ajax({
+                    url: api_url+'/mobile/user/login',
+                    method: 'post',
+                    data: {
+                        values: {
+                            username: username,
+                            password: password,
+                            imei:api.deviceId
+                        }
+                    }
+                },function(ret, err){
+                    if (ret) {
+                      if (ret.code != 0) {
+                        api.hideProgress();
+                        alert('账号或密码不正确');
+                        return;
+                      }else if (ret.code == 0) {
+                        alert('登录成功');
+        //                alert( JSON.stringify( ret.data ) );
+                          localStorage.setItem('user_id',ret.data['uid']);
+                          localStorage.setItem('user_name',username);
+                          localStorage.setItem('nickname_code',ret.data['nickname_code']);
+                          localStorage.setItem('avatar',ret.data['avatar']);
+                          localStorage.setItem('nickname',ret.data['nickname']);
+                          localStorage.setItem('token',ret.data['token']);
+                          localStorage.setItem('is_end',ret.data['is_end']);
+                          localStorage.setItem('end_time',ret.data['end_time']);
+                          localStorage.setItem('is_ever',ret.data['is_ever']);
+                          localStorage.setItem('imei',api.deviceId);
+                          api.sendEvent({
+                            name: 'newLoingdata',
+                            extra: {
+                            }
+                          });
+                          api.hideProgress();
+                          api.closeWin({
+                          });
+                          var UIInput = api.require('UIInput');
+                          UIInput.closeKeyboard({
+                              id:0
+                          });
+                      }
+                    } else {
+                      api.hideProgress();
+                      alert('网络错误！');
+                      return;
+                    }
+                });
+              }
+          } else {
+            api.hideProgress();
+            api.alert({
+                title: '糟糕~',
+                msg: '网络错误！',
+            });
+          }
+      });
+    }
+
+    function openWin(name){
+          var delay = 0;
+          if(api.systemType != 'ios'){
+              delay = 300;
+          }
+          api.openWin({
+              name: ''+name+'',
+              url: ''+name+'.html',
+              bounces:false,
+              delay: delay,
+              slidBackEnabled:true,
+              vScrollBarEnabled:false
+          });
+      }
+      //页面传参
+      function openLogin(){
+          var delay = 0;
+          if(api.systemType != 'ios'){
+              delay = 300;
+          }
+          api.openWin({
+              name: 'login',
+              url: './login.html',
+              pageParam:{username:usernamer,password:password},
+          });
+      }
+    function closeWin(){
+        api.closeWin({
+        });
+    }
+</script>
+</html>

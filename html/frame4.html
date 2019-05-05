@@ -1,0 +1,501 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <style type="text/css">
+     html,body{background-color:#f5f6f4 ;background-size:100% 100%;  }
+        .text-white {
+            color: #f4f4f4 !important;
+        }
+        .aui-grid [class*=aui-col-] {
+            padding: 0.75rem 0;
+        }
+        .iconfont{
+          font-size: 1.5rem
+        }
+		#user_bg{
+  position:fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height:100%;
+  min-width: 1000px;
+  z-index:-10;
+  zoom: 1;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-position: center 0;
+}
+    </style>
+</head>
+<body>
+    <!-- 顶部 -->
+    <section class="myui-bg-info" id="user-info">
+      <div class="user-box">
+        <div class="user-box-1" tapmode onclick="toLogin()">
+          <img src="../image/user_img.png">
+        </div>
+          <div id="islogin" class="user-box-2" style="font-size:0.8rem;color:#dcc87f;" onclick="toLogin()">
+              个人中心
+          </div>
+          <div id="time" class="user-box-2 masked" style="font-size:0.75rem;" onclick="toLogin()">
+          </div>
+        </div>
+    </section>
+<div class="br"></div>
+<section class="aui-content style="line-height:18px;"">
+</div>
+    <center><ul class="aui-list aui-list-in" style="line-height:30px;">
+      <li class="aui-list-item" onclick="openWin('open_vip_win')" >
+          <div class="aui-list-item-label-icon">
+              <i><img src="../image/app/cz.png" style="border-radius:1rem;" width="25" height="20"/></i>
+          </div>
+          <div class="aui-list-item-inner aui-list-item-arrow" >
+              <div style="font-size:0.75rem;color:#323232;">会员续费</div>
+              <div class="aui-list-item-right"></div>
+          </div>
+      </li>
+      <li class="aui-list-item" tapmode onclick="openWin('share_win')">
+          <div class="aui-list-item-label-icon">
+              <i><img src="../image/app/tuiguang.png" style="border-radius:1rem;" width="25" height="20"/></i>
+          </div>
+          <div class="aui-list-item-inner aui-list-item-arrow">
+              <div style="font-size:0.75rem;color:#323232;">邀请好友</div>
+              <div class="aui-list-item-right"></div>
+          </div>
+      </li>
+      <li class="aui-list-item" onclick="openWin('back_pwd')">
+          <div class="aui-list-item-label-icon">
+              <i><img src="../image/app/mima.png" style="border-radius:1rem;" width="25" height="20"/></i>
+          </div>
+          <div class="aui-list-item-inner aui-list-item-arrow">
+              <div style="font-size:0.75rem;color:#323232;">修改密码</div>
+              <div class="aui-list-item-right"></div>
+          </div>
+      </li>
+    </ul>
+</section>
+<div class="br"></div>
+<section class="aui-content style="line-height:18px;"">
+</div>
+    <center><ul class="aui-list aui-list-in" style="line-height:30px;">
+      <li class="aui-list-item" tapmode onclick="cleaCache()">
+          <div class="aui-list-item-label-icon">
+              <i><img src="../image/app/qingli.png" style="border-radius:1rem;" width="25" height="20"/></i>
+          </div>
+          <div class="aui-list-item-inner aui-list-item-arrow">
+              <div style="font-size:0.75rem;color:#323232;">清理缓存</div>
+              <div id="cache" class="aui-list-item-right"></div>
+          </div>
+      </li>
+      <li class="aui-list-item" tapmode onclick="checkUpdate()">
+          <div class="aui-list-item-label-icon">
+              <i><img src="../image/app/shengji.png" style="border-radius:1rem;" width="25" height="20"/></i>
+          </div>
+          <div class="aui-list-item-inner aui-list-item-arrow">
+              <div style="font-size:0.75rem;color:#323232;">检测更新</div>
+              <div id="vsion" class="aui-list-item-right"></div>
+          </div>
+      </li>
+      <li class="aui-list-item" tapmode onclick="exitLogin()">
+          <div class="aui-list-item-label-icon">
+              <i><img src="../image/app/gengxin.png" style="border-radius:1rem;" width="25" height="21"/></i>
+          </div>
+          <div class="aui-list-item-inner aui-list-item-arrow">
+              <div style="font-size:0.75rem;color:#323232;">退出账号</div>
+              <div class="aui-list-item-right"></div>
+          </div>
+      </li>
+      <li class="aui-list-item" tapmode onclick="closeWin()">
+          <div class="aui-list-item-label-icon">
+              <i><img src="../image/app/tuichu.png" style="border-radius:1rem;" width="25" height="21"/></i>
+          </div>
+          <div class="aui-list-item-inner aui-list-item-arrow">
+              <div style="font-size:0.75rem;color:#323232;">退出软件</div>
+              <div class="aui-list-item-right"></div>
+          </div>
+      </li>
+    </ul>
+</section>
+<div class="br">
+</div>
+<div id="mianze" class="user-bt" onclick="alert('免责声明:本站所有视频均来自互联网，版权归原创者所有，如果侵犯了您的权益，请通知我们，我们将会在3个正常工作日内删除其侵权内容，谢谢合作。')">
+</div>
+<div class="br">
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript">
+//写入全局变量参数值
+var api_url = localStorage.getItem('api_url');
+var share_content = localStorage.getItem('share_content');
+apiready = function () {
+api.parseTapmode();
+var appVersion = api.appVersion;
+var appName = api.appName;
+var vsion = $api.byId('vsion');
+var mianze = $api.byId('mianze');
+vsion.innerHTML = 'v'+appVersion;
+mianze.innerHTML = appName+'v'+appVersion+'<span style="color:#7bbfea">免责声明</span>';
+    //监听重新获取客服联系方式广播
+    api.addEventListener({
+        name: 'newLoingdata'
+    }, function(ret, err) {
+      if (ret) {
+        getData();
+        location.reload();
+      }
+    });
+    //启动加载用户数据方法
+    getData();
+    //启动计算缓存方法
+    getCache();
+    api.setRefreshHeaderInfo({
+        visible: true,
+        loadingImg: 'widget://image/refresh.png',
+        bgColor: '#fff',
+        textColor: '#333',
+        textDown: '下拉刷新...',
+        textUp: '松开刷新...',
+        showTime: true
+    }, function(ret, err){
+      if (err) {
+        api.toast({
+            msg: '加载数据失败',
+            duration: 2000,
+            location: 'middle'
+        });
+        api.refreshHeaderLoadDone();
+      }else {
+        //启动加载用户数据方法
+        getData();
+        //启动计算缓存方法
+        getCache();
+        api.toast({
+            msg: '刷新成功',
+            duration: 1000,
+            location: 'middle'
+        });
+        api.refreshHeaderLoadDone();
+      }
+    });
+}
+//分享方法
+function share() {
+  var sharedModule = api.require("shareAction");
+  var sharedMsg = {
+          text : share_content+api_url,
+          type : "text",
+  };
+  sharedModule.share(sharedMsg);
+};
+//打开有关openWin(name)方法的页面参数
+function openWin(name){
+  if (localStorage.getItem('user_id')<1) {
+    api.openWin({
+        name: 'login',
+        url: './login.html',
+    });
+    return;
+  }else {
+    var delay = 0;
+    if(api.systemType != 'ios'){
+        delay = 300;
+    }
+    api.openWin({
+        name: ''+name+'',
+        url: ''+name+'.html',
+        bounces:false,
+        delay: delay,
+        slidBackEnabled:true,
+        vScrollBarEnabled:false
+    });
+  }
+}
+//获取用户相关数据
+function getData(){
+  var user_id = localStorage.getItem('user_id');//写入用户uid
+  var user_name = localStorage.getItem('user_name');//写入用户名
+  var nickname = localStorage.getItem('nickname');//写入用户昵称
+  var nickname_code = localStorage.getItem('nickname_code');//写入用户邀请码
+  var user_time = localStorage.getItem('end_time');//写入用户过期时间
+  var is_ever = localStorage.getItem('is_ever');//是否是终身会员
+  var s1 = formatDateTime(user_time);
+  var timestamp = Date.parse(new Date())/1000;
+  var time = $api.byId('time');
+  var islogin = $api.byId('islogin');
+  //alert(user_time);
+  if (user_time>timestamp) {
+    time.innerHTML = '<i class="iconfont icon-huiyuan" style="font-size:0.75rem;color:#ff5722"></i> VIP '+s1+' 到期';
+  }
+  if (user_time<timestamp) {
+    time.innerHTML = '<i class="iconfont icon-huiyuan" style="font-size:0.75rem;color:#ff5722"></i> VIP已到期 请及时续费';
+  }
+  if(is_ever == 1) {
+    time.innerHTML = '<i class="iconfont icon-huiyuan" style="font-size:0.75rem;color:#ff5722"></i> 永久贵宾VIP';
+  }
+  if (localStorage.getItem('user_id')<1) {
+    time.innerHTML = '请先登陆';
+  }
+  if (localStorage.getItem('user_name')>1) {
+    islogin.innerHTML = 'ID:'+nickname_code+'<br/>昵称: '+nickname;
+  }
+}
+//计算用户过期时间
+function formatDateTime(timeStamp) {
+    var date = new Date();
+    date.setTime(timeStamp * 1000);
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    var h = date.getHours();
+    h = h < 10 ? ('0' + h) : h;
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    minute = minute < 10 ? ('0' + minute) : minute;
+    second = second < 10 ? ('0' + second) : second;
+    return y + '-' + m + '-' + d;
+};
+//打开个人中心
+function toLogin(){
+  if (localStorage.getItem('user_id')>0) {
+      api.toast({
+          msg: '暂未开发。。',
+          duration: 2000
+      });
+  }else {
+    api.openWin({
+        name: 'login',
+        url: './login.html',
+        delay: 300,
+    });
+  }
+}
+//打开vip续费
+function toVip(){
+  if (user_id>0) {
+    api.openWin({
+        name: 'open_vip_win',
+        url: './open_vip_win.html',
+        delay: 300,
+    });
+
+  }else {
+    api.openWin({
+        name: 'login',
+        url: './login.html',
+        delay: 300,
+    });
+  }
+}
+//退出账号清除登录资料
+function exitLogin(){
+  api.sendEvent({
+    name: 'newLoingdata',
+    extra: {
+    }
+  });
+  localStorage.setItem('user_id','');
+  localStorage.setItem('user_name','');
+  localStorage.setItem('end_time','');
+  localStorage.setItem('token','');
+  localStorage.setItem('nickname','');
+  localStorage.setItem('avatar','');
+  localStorage.setItem('nickname_code','');
+  api.toast({
+      msg: '您的账号已经退出登录！'
+  });
+  api.openWin({
+  });
+}
+//打开相关页面参数
+function openWin(name){
+    var delay = 0;
+    if(api.systemType != 'ios'){
+        delay = 300;
+    }
+    var username = localStorage.getItem('user_name');
+    var uid = localStorage.getItem('user_id');
+    if (username == ''|uid == '') {
+      api.toast({
+          msg: '请登录后再操作！'
+      });
+      return;
+    }else {
+      api.openWin({
+          name: ''+name+'',
+          url: ''+name+'.html',
+          bounces:false,
+          delay: delay,
+          slidBackEnabled:true,
+          vScrollBarEnabled:false
+      });
+    }
+}
+//清理缓存
+function cleaCache(){
+  api.clearCache(function() {
+      api.toast({
+          msg: '清除完成'
+      });
+      getCache();
+  });
+}
+
+//计算缓存
+function getCache(){
+  api.getCacheSize(function(ret) {
+      var size = ret.size/1024/1024;
+      var mb = size.toFixed(2)
+      var cache = $api.byId('cache');
+      cache.innerHTML = mb+'MB';
+
+  });
+}
+//访问图片地址
+function imgUrl(img){
+  if (img=='img1') {
+    api.openWin({
+        name: 'h5',
+        url: './h5.html',
+        pageParam: {
+            url: localStorage.getItem('fxurl1')
+        }
+    });
+  }else {
+    api.openWin({
+        name: 'h5',
+        url: './h5.html',
+        pageParam: {
+            url: localStorage.getItem('fxurl2')
+        }
+    });
+  }
+}
+
+//访问轮播地址
+function toBanner(url){
+  if (url == '') {
+  }else {
+    api.openWin({
+        name: 'h5',
+        url: './h5.html',
+        pageParam: {
+            url: url
+        }
+    });
+  }
+}
+
+//启动幻灯轮播图
+function banNer(){
+  var slide = new auiSlide({
+      container:document.getElementById("aui-slide"),
+      // "width":300,
+      "height":150,
+      "speed":300,
+      "pageShow":true,
+      "autoPlay": 5000,
+      "pageStyle":'dot',
+      "loop":true,
+      'dotPosition':'center',
+  });
+}
+
+//检测更新app  （在apicloud进行）
+function checkUpdate() {
+var mam = api.require('mam');
+mam.checkUpdate(function(ret, err) {
+if (ret) {
+  var result = ret.result;
+  if (result.update == true && result.closed == false) {
+      var str = '新版本号:' + result.version + ';\n更新提示:' + result.updateTip  //下载地址:' + ';发布时间:' + result.time; + result.source + '; 需要的可以加上去
+      api.confirm({
+          title : '有新的版本,是否下载并安装 ',
+          msg : str,
+          buttons : ['确定', '取消']
+      }, function(ret, err) {
+          if (ret.buttonIndex == 1) {
+              if (api.systemType == "android") {
+                  api.download({
+                      url : result.source,
+                      report : true
+                  }, function(ret, err) {
+                      if (ret && 0 == ret.state) {/* 下载进度 */
+                          api.toast({
+                              msg : "正在下载应用" + ret.percent + "%",
+                              duration : 2000
+                          });
+                      }
+                      if (ret && 1 == ret.state) {/* 下载完成 */
+                          var savePath = ret.savePath;
+                          api.installApp({
+                              appUri : savePath
+                          });
+                      }
+                  });
+              }
+              if (api.systemType == "ios") {
+                  api.installApp({
+                      appUri : result.source
+                  });
+              }
+          }
+      });
+  } else {
+      api.alert({
+          msg : "已是最新版，无需更新！"
+      });
+  }
+} else {
+  api.alert({
+      msg : err.msg
+  });
+}
+});
+}
+
+//下载管理
+function openManagerView() {
+    var downloadManager = api.require('downloadManager');
+    downloadManager.openManagerView({
+        title: '下载管理'
+    }, function(ret, err) {
+        if (ret) {
+            //console.log(JSON.stringify(ret));
+            downloadManager.openDownloadedFile({
+                id: ret.id
+            }, function(ret, err) {
+                if (ret) {
+                    //alert(JSON.stringify(ret));
+                } else {
+                    api.toast({
+                        msg: ret.msg,
+                        duration: 2000,
+                        location: 'middle'
+                    });
+                }
+            });
+        } else {
+            //alert(JSON.stringify(err));
+        }
+    });
+}
+
+//退出软件清除缓存
+function closeWin(){
+  cleaCache();
+  api.closeWin();
+}
+</script>
+</html>
